@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="styleRechnungsadresse.css">
+		<script type="text/javascript" src="ajax.js"></script>
+		<script type="text/javascript" src="address.js"></script>
 	</head>
 	<body>
 		<h1>Rechnung System</h1>
@@ -16,17 +18,21 @@
 		</header>
 		<form>
 			<label>Name*</label>
-			<input type=text placeholder="Vorname Nachname"/>
+			<input id="name" type=text onblur="sendAddress();" placeholder="Vorname Nachname"/>
 			<label>Straße und Hausnummer*</label>
-			<input type=text>
+			<input id="street" type=text onblur="sendAddress();">
 			<label>Adresszusatz</label>
-			<input type=text>
+			<input id="zusatz" type=text onblur="sendAddress();">
 			<label>PLZ*</label>
-			<input type=text>
+			<input id="plz" type=text onblur="sendAddress();">
 			<label>Ort*</label>
-			<input type=text>
+			<input id="ort" type=text onblur="sendAddress();">
 			<label>Land*</label>
-			<input type=text>
+			<input id="land" type=text onblur="sendAddress();">
+			<button type="submit">Submit</button>
 		</form>
+		<script>
+			recoveryAddress();
+		</script>
 	</body>
 </html>

@@ -14,13 +14,13 @@
 				</ul>
 			</nav>
 		</header>
-		<form>
+		<form id="rechnung" onsubmit="return checkForm()">
 			<div>
 				Firma auswählen: 
-				<label><input name="Firma" type="radio" value=""/>IHTCT</label> 
-				<label><input name="Firma" type="radio" value=""/>Yijia</label> 
+				<label><input id="ihtct" type="radio" value="1"/>IHTCT</label> 
+				<label><input id="yijia" type="radio" value="2"/>Yijia</label> 
 			</div>
-			<button type="button">Rechnung erzeugen</button>
+			<button type="submit">Rechnung erzeugen</button>
 		</form>
 	</body>
 </html>
