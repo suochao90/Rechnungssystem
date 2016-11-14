@@ -12,6 +12,15 @@ var address = function() {
 	this.land;
 };
 
+var order = function() {
+	this.beschreibung;
+	this.menge;
+	this.preisOhneUSt;
+	this.ust;
+	this.preisMitUSt;
+	this.gesamtPreis;
+}
+
 app.set('port', 8080);
 app.use(express.static(__dirname + '/web'));
 
@@ -32,6 +41,26 @@ app.get('/recoveryAddress', function(req, res){
 			 + address.plz + "|"
 			 + address.ort + "|"
 			 + address.land;
+	res.send(text);
+});
+
+app.get('/sendOrder', function(req, res){
+	order.beschreibung = req.query.beschreibung;
+	order.menge = req.query.menge;
+	order.preisOhneUSt = req.query.preisOhneUSt;
+	order.ust = req.query.ust;
+	order.preisMitUSt = req.query.preisMitUSt;
+	order.gesamtPreis = req.query.gesamtPreis;
+	console.log(req.query);
+});
+
+app.get('/recoveryOrder', function(req, res){
+	var text = order.beschreibung + "|"
+			 + order.menge + "|"
+			 + order.preisOhneUSt + "|"
+			 + order.ust + "|"
+			 + order.preisMitUSt + "|"
+			 + order.gesamtPreis;
 	res.send(text);
 });
 

@@ -48,21 +48,19 @@ form table {
 	margin-right: auto;
 }
 
-form label {
-	margin-left: 20px;
-	margin-right: 5px;
-    font-size: 14px;
+th {
     font-family: Tahoma;
+    font-size: 14px;
 }
 
 form button {
 	float: right;
 	margin-top: 20px;
-	margin-right: 19.1%;
+	margin-right: 11.2%;
 }
 
 .beschreibung {
-	width: 300px;
+	width: 360px;
 }
 
 .menge {
@@ -70,6 +68,17 @@ form button {
 }
 
 .preisOhneUSt {
-	width: 100px;
+	width: 180px;
 }
 
+.ust {
+	width: 50px;
+}
+
+.preisMitUSt {
+	width: 180px;
+}
+
+.gesamtPreis {
+	width: 180px;
+}

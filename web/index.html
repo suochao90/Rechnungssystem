@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="styleRechnungsadresse.css">
+		<link rel="stylesheet" type="text/css" href="styleAddress.css">
 		<script type="text/javascript" src="ajax.js"></script>
 		<script type="text/javascript" src="address.js"></script>
 	</head>
@@ -11,8 +11,8 @@
 			<nav>
 				<ul>
 					<li><a href="index.html">Rechnungsadresse</a></li>
-					<li><a href="bestellung.html">Bestellung</a></li>
-					<li><a href="firma.html">Firma</a></li>
+					<li><a href="order.html">Bestellung</a></li>
+					<li><a href="company.html">Firma</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -29,7 +29,6 @@
 			<input id="ort" type=text onblur="sendAddress();">
 			<label>Land*</label>
 			<input id="land" type=text onblur="sendAddress();">
-			<button type="submit">Submit</button>
 		</form>
 		<script>
 			recoveryAddress();
