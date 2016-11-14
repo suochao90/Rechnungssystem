@@ -40,9 +40,3 @@ function updatePage() {
 			document.getElementById("land").value = response[5];
 	}
 }
-
-/*function submit() {
-	var url = "/submit";
-	request.open("GET", url, true);
-	request.send();
-}*/

@@ -35,15 +35,14 @@ app.get('/recoveryAddress', function(req, res){
 	res.send(text);
 });
 
-/*app.get('/submit', function(req, res){
-	console.log("!!!!!!!!!!!!")
+app.get('/submit', function(req, res){
 	address.customerName = "";
 	address.street = "";
 	address.zusatz = "";
 	address.plz = "";
 	address.ort = "";
 	address.land = "";
-});*/
+});
 
 httpServer.listen(app.get('port'), function () {
 	console.log("Express server listening on port %s.", httpServer.address().port);
