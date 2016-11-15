@@ -71,6 +71,8 @@ app.get('/submit', function(req, res){
 	address.plz = "";
 	address.ort = "";
 	address.land = "";
+	console.log(req.query);
+	res.send("Vielen Dank!");
 });
 
 httpServer.listen(app.get('port'), function () {
