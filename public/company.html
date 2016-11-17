@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="styleCompany.css">
+	</head>
+	<body>
+		<h1>Rechnung System</h1>
+		<header>
+			<nav>
+				<ul>
+					<li><a href="index.html">Rechnungsadresse</a></li>
+					<li><a href="order.html">Bestellung</a></li>
+					<li><a href="company.html">Firma</a></li>
+				</ul>
+			</nav>
+		</header>
+		<form action="/submit" method="get">
+			<div>
+				Firma auswählen: 
+				<label><input id="ihtct" name="company" type="radio" value="ihtct"/>IHTCT</label> 
+				<label><input id="yijia" name="company" type="radio" value="yijia"/>Yijia</label> 
+			</div>
+			<!--button type="submit" onclick="window.open('company.html');">Rechnung erzeugen</button--!>
+			<button type="submit">Rechnung erzeugen</button>
+		</form>
+	</body>
+</html>

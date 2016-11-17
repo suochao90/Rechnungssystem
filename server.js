@@ -3,6 +3,9 @@ var express = require('express'),
 	app = express(),
 	httpServer = http.createServer(app);
 
+var PDF = require('pdfkit');
+var fs = require('fs');
+
 var address = function() {
 	this.customerName;
 	this.street;
@@ -22,9 +25,9 @@ var order = function() {
 }
 
 app.set('port', 8080);
-app.use(express.static(__dirname + '/web'));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/sendAddress', function(req, res){
+app.get('/sendAddress', function(req, res) {
 	address.customerName = req.query.name;
 	address.street = req.query.street;
 	address.zusatz = req.query.zusatz;
@@ -34,7 +37,7 @@ app.get('/sendAddress', function(req, res){
 	console.log(req.query);
 });
 
-app.get('/recoveryAddress', function(req, res){
+app.get('/recoveryAddress', function(req, res) {
 	var text = address.customerName + "|"
 			 + address.street + "|"
 			 + address.zusatz + "|"
@@ -44,7 +47,7 @@ app.get('/recoveryAddress', function(req, res){
 	res.send(text);
 });
 
-app.get('/sendOrder', function(req, res){
+app.get('/sendOrder', function(req, res) {
 	order.beschreibung = req.query.beschreibung;
 	order.menge = req.query.menge;
 	order.preisOhneUSt = req.query.preisOhneUSt;
@@ -54,7 +57,7 @@ app.get('/sendOrder', function(req, res){
 	console.log(req.query);
 });
 
-app.get('/recoveryOrder', function(req, res){
+app.get('/recoveryOrder', function(req, res) {
 	var text = order.beschreibung + "|"
 			 + order.menge + "|"
 			 + order.preisOhneUSt + "|"
@@ -64,7 +67,18 @@ app.get('/recoveryOrder', function(req, res){
 	res.send(text);
 });
 
-app.get('/submit', function(req, res){
+app.get('/submit', function(req, res) {
+	var doc = new PDF();
+	doc.pipe(fs.createWriteStream('./public/pdf/test.pdf'));
+	var text = address.customerName + "\n"
+			 + address.street + ", "
+			 + address.zusatz + "\n"
+			 + address.plz + " "
+			 + address.ort + "\n"
+			 + address.land;
+	doc.text(text, 100, 100);
+	doc.end();
+
 	address.customerName = "";
 	address.street = "";
 	address.zusatz = "";
@@ -72,7 +86,7 @@ app.get('/submit', function(req, res){
 	address.ort = "";
 	address.land = "";
 	console.log(req.query);
-	res.send("Vielen Dank!");
+	res.send("<script>window.location.href='/pdf/test.pdf';</script>");
 });
 
 httpServer.listen(app.get('port'), function () {

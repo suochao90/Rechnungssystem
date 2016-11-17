@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="styleAddress.css">
+		<script type="text/javascript" src="ajax.js"></script>
+		<script type="text/javascript" src="address.js"></script>
+	</head>
+	<body>
+		<h1>Rechnung System</h1>
+		<header>
+			<nav>
+				<ul>
+					<li><a href="index.html">Rechnungsadresse</a></li>
+					<li><a href="order.html">Bestellung</a></li>
+					<li><a href="company.html">Firma</a></li>
+				</ul>
+			</nav>
+		</header>
+		<form>
+			<label>Name*</label>
+			<input id="name" type=text onblur="sendAddress();" placeholder="Vorname Nachname"/>
+			<label>Straße und Hausnummer*</label>
+			<input id="street" type=text onblur="sendAddress();">
+			<label>Adresszusatz</label>
+			<input id="zusatz" type=text onblur="sendAddress();">
+			<label>PLZ*</label>
+			<input id="plz" type=text onblur="sendAddress();">
+			<label>Ort*</label>
+			<input id="ort" type=text onblur="sendAddress();">
+			<label>Land*</label>
+			<input id="land" type=text onblur="sendAddress();">
+		</form>
+		<script>
+			recoveryAddress();
+		</script>
+	</body>
+</html>

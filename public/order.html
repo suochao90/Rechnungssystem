@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="styleOrder.css">
+		<script type="text/javascript" src="ajax.js"></script>
+		<script type="text/javascript" src="order.js"></script>
+	</head>
+	<body>
+		<h1>Rechnung System</h1>
+		<header>
+			<nav>
+				<ul>
+					<li><a href="index.html">Rechnungsadresse</a></li>
+					<li><a href="order.html">Bestellung</a></li>
+					<li><a href="company.html">Firma</a></li>
+				</ul>
+			</nav>
+		</header>
+		<form>
+			<table>
+				<thead>
+					<tr>
+						<th>Beschreibung</th>
+						<th>Menge</th>
+						<th>Stückpreis(ohne USt.)</th>
+						<th>USt.%</th>
+						<th>Stückpreis(inkl. USt.)</th>
+						<th>Gesamtpreis(inkl. USt.)</th>
+					</tr>
+				</thead>
+				<tr>
+					<td><input id="beschreibung" type=text class="beschreibung" onblur="sendOrder();"></td>
+					<td><input id="menge" type=text class="menge" value="1" onFocus="this.value=''" onblur="sendOrder();"></td>
+					<td><input id="preisOhneUSt" type=text class="preisOhneUSt" onblur="sendOrder();"></td>
+					<td><input id="ust" type=text class="ust" onblur="sendOrder();"></td>
+					<td><input id="preisMitUSt" type=text class="preisMitUSt" onblur="sendOrder();"></td>
+					<td><input id="gesamtPreis" type=text class="gesamtPreis" onblur="sendOrder();"></td>
+				</tr>
+				
+			</table>
+			<button type="button">Neue Beschreibung Hinzufügen</button>
+		</form>
+		<script>
+			recoveryOrder();
+		</script>
+	</body>
+</html>
