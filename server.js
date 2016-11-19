@@ -69,14 +69,36 @@ app.get('/recoveryOrder', function(req, res) {
 
 app.get('/submit', function(req, res) {
 	var doc = new PDF();
-	doc.pipe(fs.createWriteStream('./public/pdf/test.pdf'));
+	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
+
+	doc.font('Helvetica-Bold')
+	   .fontSize(20)
+	   .text('RECHNUNG', {align: 'center'})
+	   .moveDown(2);
+	
+	doc.fontSize(12)
+	   .text('Rechnungsadresse:');
+
 	var text = address.customerName + "\n"
 			 + address.street + ", "
 			 + address.zusatz + "\n"
 			 + address.plz + " "
 			 + address.ort + "\n"
 			 + address.land;
-	doc.text(text, 100, 100);
+	doc.font('Helvetica')
+	   .text(text);
+
+	var ihtct = "IHTCT Healthcare & Trade GmbH" + "\n"
+	          + "Emanuel-Leutze-Str. 21" + "\n"
+			  + "40547 Düsseldorf" + "\n"
+			  + "Deutschland" + "\n"
+			  + "USt-ID: DE305531798"
+	for(i = 0; i < 5; i++) {
+		doc.moveUp();
+	}
+	doc.font('Helvetica-Bold')
+	   .text(ihtct, {align: 'right'});
+	
 	doc.end();
 
 	address.customerName = "";
@@ -86,7 +108,7 @@ app.get('/submit', function(req, res) {
 	address.ort = "";
 	address.land = "";
 	console.log(req.query);
-	res.send("<script>window.location.href='/pdf/test.pdf';</script>");
+	res.send("<script>window.location.href='/pdf/invoice.pdf';</script>");
 });
 
 httpServer.listen(app.get('port'), function () {
