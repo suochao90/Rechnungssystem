@@ -17,7 +17,7 @@
 			</nav>
 		</header>
 		<form>
-			<table>
+			<table id="order">
 				<thead>
 					<tr>
 						<th>Beschreibung</th>
@@ -29,16 +29,16 @@
 					</tr>
 				</thead>
 				<tr>
-					<td><input id="beschreibung" type=text class="beschreibung" onblur="sendOrder();"></td>
-					<td><input id="menge" type=text class="menge" value="1" onFocus="this.value=''" onblur="sendOrder();"></td>
-					<td><input id="preisOhneUSt" type=text class="preisOhneUSt" onblur="sendOrder();"></td>
-					<td><input id="ust" type=text class="ust" onblur="sendOrder();"></td>
-					<td><input id="preisMitUSt" type=text class="preisMitUSt" onblur="sendOrder();"></td>
-					<td><input id="gesamtPreis" type=text class="gesamtPreis" onblur="sendOrder();"></td>
+					<td><input id="beschreibung0" type=text class="beschreibung" onblur="sendOrder();"></td>
+					<td><input id="menge0" type=text class="menge" value="1" onFocus="this.value=''" onblur="sendOrder();"></td>
+					<td><input id="preisOhneUSt0" type=text class="preisOhneUSt" onblur="sendOrder();"></td>
+					<td><input id="ust0" type=text class="ust" onblur="sendOrder();"></td>
+					<td><input id="preisMitUSt0" type=text class="preisMitUSt" onblur="sendOrder();"></td>
+					<td><input id="gesamtPreis0" type=text class="gesamtPreis" onblur="sendOrder();"></td>
 				</tr>
 				
 			</table>
-			<button type="button">Neue Beschreibung Hinzufügen</button>
+			<button type="button" onclick="addRow();">Neue Beschreibung Hinzufügen</button>
 		</form>
 		<script>
 			recoveryOrder();

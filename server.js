@@ -6,7 +6,7 @@ var express = require('express'),
 var PDF = require('pdfkit');
 var fs = require('fs');
 
-var address = function() {
+var Address = function() {
 	this.customerName;
 	this.street;
 	this.zusatz;
@@ -15,14 +15,18 @@ var address = function() {
 	this.land;
 };
 
-var order = function() {
-	this.beschreibung;
-	this.menge;
-	this.preisOhneUSt;
-	this.ust;
-	this.preisMitUSt;
-	this.gesamtPreis;
+var Order = function() {
+	this.numOfRow;
+	this.beschreibung = new Array();
+	this.menge = new Array();
+	this.preisOhneUSt = new Array();
+	this.ust = new Array();
+	this.preisMitUSt = new Array();
+	this.gesamtPreis = new Array();
 }
+
+var address = new Address();
+var order = new Order();
 
 app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
@@ -48,23 +52,27 @@ app.get('/recoveryAddress', function(req, res) {
 });
 
 app.get('/sendOrder', function(req, res) {
-	order.beschreibung = req.query.beschreibung;
-	order.menge = req.query.menge;
-	order.preisOhneUSt = req.query.preisOhneUSt;
-	order.ust = req.query.ust;
-	order.preisMitUSt = req.query.preisMitUSt;
-	order.gesamtPreis = req.query.gesamtPreis;
-	console.log(req.query);
+	order.numOfRow = req.query.numOfRow;
+	order.beschreibung[order.numOfRow] = req.query.beschreibung;
+	order.menge[order.numOfRow] = req.query.menge;
+	order.preisOhneUSt[order.numOfRow] = req.query.preisOhneUSt;
+	order.ust[order.numOfRow] = req.query.ust;
+	order.preisMitUSt[order.numOfRow] = req.query.preisMitUSt;
+	order.gesamtPreis[order.numOfRow] = req.query.gesamtPreis;
+//	console.log(req.query);
+	console.log(order.beschreibung);
 });
 
 app.get('/recoveryOrder', function(req, res) {
-	var text = order.beschreibung + "|"
-			 + order.menge + "|"
-			 + order.preisOhneUSt + "|"
-			 + order.ust + "|"
-			 + order.preisMitUSt + "|"
-			 + order.gesamtPreis;
-	res.send(text);
+	if (typeof order.numOfRow != "undefined") {
+		var text = order.beschreibung[0] + "|"
+				 + order.menge[0] + "|"
+				 + order.preisOhneUSt[0] + "|"
+				 + order.ust[0] + "|"
+				 + order.preisMitUSt[0] + "|"
+				 + order.gesamtPreis[0];
+		res.send(text);
+	}
 });
 
 app.get('/submit', function(req, res) {
