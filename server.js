@@ -53,24 +53,49 @@ app.get('/recoveryAddress', function(req, res) {
 
 app.get('/sendOrder', function(req, res) {
 	order.numOfRow = req.query.numOfRow;
-	order.beschreibung[order.numOfRow] = req.query.beschreibung;
-	order.menge[order.numOfRow] = req.query.menge;
-	order.preisOhneUSt[order.numOfRow] = req.query.preisOhneUSt;
-	order.ust[order.numOfRow] = req.query.ust;
-	order.preisMitUSt[order.numOfRow] = req.query.preisMitUSt;
-	order.gesamtPreis[order.numOfRow] = req.query.gesamtPreis;
-//	console.log(req.query);
-	console.log(order.beschreibung);
+	var tempBeschreibung = req.query.beschreibung.split("|");
+	var tempMenge = req.query.menge.split("|");
+	var tempPreisOhneUSt = req.query.preisOhneUSt.split("|");
+	var tempUSt = req.query.ust.split("|");
+	var tempPreisMitUSt = req.query.preisMitUSt.split("|");
+	var tempGesamtPreis = req.query.gesamtPreis.split("|");
+	for (var i = 0; i <= order.numOfRow; i++) {
+		order.beschreibung[i] = tempBeschreibung[i];
+		order.menge[i] = tempMenge[i];
+		order.preisOhneUSt[i] = tempPreisOhneUSt[i];
+		order.ust[i] = tempUSt[i];
+		order.preisMitUSt[i] = tempPreisMitUSt[i];
+		order.gesamtPreis[i] = tempGesamtPreis[i];
+	}
+	console.log(order);
 });
 
 app.get('/recoveryOrder', function(req, res) {
 	if (typeof order.numOfRow != "undefined") {
-		var text = order.beschreibung[0] + "|"
-				 + order.menge[0] + "|"
-				 + order.preisOhneUSt[0] + "|"
-				 + order.ust[0] + "|"
-				 + order.preisMitUSt[0] + "|"
-				 + order.gesamtPreis[0];
+		var beschreibung = order.beschreibung[0];
+		var menge  = order.menge[0];
+		var preisOhneUSt = order.preisOhneUSt[0];
+		var ust = order.ust[0];
+		var preisMitUSt = order.preisMitUSt[0];
+		var gesamtPreis = order.gesamtPreis[0];
+
+		for (var i = 1; i <= order.numOfRow; i++) {
+			beschreibung = beschreibung + "|" + order.beschreibung[i];
+			menge = menge + "|" + order.menge[i];
+			preisOhneUSt = preisOhneUSt + "|" + order.preisOhneUSt[i];
+			ust = ust + "|" + order.ust[i];
+			preisMitUSt = preisMitUSt + "|" + order.preisMitUSt[i];
+			gesamtPreis = gesamtPreis + "|" + order.gesamtPreis[i];
+		}
+
+		var text = order.numOfRow + "#"
+				 + beschreibung + "#"
+				 + menge + "#"
+				 + preisOhneUSt + "#"
+				 + ust + "#"
+				 + preisMitUSt + "#"
+				 + gesamtPreis;
+		
 		res.send(text);
 	}
 });
