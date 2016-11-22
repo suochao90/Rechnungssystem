@@ -28,6 +28,8 @@ var Order = function() {
 var address = new Address();
 var order = new Order();
 
+var invoiceIndex = 1;
+
 app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
 
@@ -112,12 +114,14 @@ app.get('/submit', function(req, res) {
 	doc.fontSize(12)
 	   .text('Rechnungsadresse:');
 
-	var text = address.customerName + "\n"
+/*	var text = address.customerName + "\n"
 			 + address.street + ", "
 			 + address.zusatz + "\n"
 			 + address.plz + " "
 			 + address.ort + "\n"
 			 + address.land;
+*/
+	var text = "Chao Suo\nEmsstr. 2a, Zimmer 521\n38120 Braunschweig\nDeutschland";
 	doc.font('Helvetica')
 	   .text(text);
 
@@ -131,6 +135,31 @@ app.get('/submit', function(req, res) {
 	}
 	doc.font('Helvetica-Bold')
 	   .text(ihtct, {align: 'right'});
+
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (day >= 0 && day <= 9) {
+		day = "0" + day;
+	}
+	var invoiceDate = day + "." + month + "." + year;
+	doc.moveDown(3);
+	doc.text("Rechnungsdatum: ", {continued: true});
+	doc.font('Helvetica')
+	   .text(invoiceDate);
+	doc.font('Helvetica-Bold')
+	   .text("Rechnungsnummer: ", {continued: true});
+	doc.font('Helvetica')
+	   .text("DE" + year + month + day + invoiceIndex);
+	invoiceIndex++;
+
+	doc.moveTo(73, 295)
+	   .lineTo(540, 295)
+	   .stroke();
 	
 	doc.end();
 
