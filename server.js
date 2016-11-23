@@ -160,7 +160,34 @@ app.get('/submit', function(req, res) {
 	doc.moveTo(73, 295)
 	   .lineTo(540, 295)
 	   .stroke();
+
+
+	doc.font('Helvetica-Bold')
+	   .text("Menge", 73, 337)
+	   .text("Beschreibung", 120, 337)
+	   .text("Stückpreis\n(ohne USt.)", 290, 330)
+	   .text("USt.%", 358, 337)
+	   .text("Stückpreis\n(inkl. USt.)", 399, 330)
+	   .text("Gesamtpreis\n(inkl. USt.)", 467, 330);
 	
+	doc.moveTo(73, 365)
+	   .lineTo(540, 365)
+	   .stroke();
+
+	doc.font('Helvetica')
+	   .text("1", 73, 375)
+	   .text("Aptamil Pre", 120, 375)
+	   .text("13,97 €", 290, 375)
+	   .text("7", 358, 375)
+	   .text("15,00 €", 399, 375)
+	   .text("15,00 €", 467, 375);
+	doc.text("1", 73, 395)
+	   .text("Aptamil 1", 120, 395)
+	   .text("13,97 €", 290, 395)
+	   .text("7", 358, 395)
+	   .text("15,00 €", 399, 395)
+	   .text("15,00 €", 467, 395);
+	   
 	doc.end();
 
 	address.customerName = "";
