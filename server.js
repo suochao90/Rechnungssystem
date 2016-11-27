@@ -174,7 +174,9 @@ app.get('/submit', function(req, res) {
 	   .lineTo(540, 365)
 	   .stroke();
 
-	doc.font('Helvetica')
+	doc.font('Helvetica');
+
+/*	doc.font('Helvetica')
 	   .text("1", 73, 375)
 	   .text("Aptamil Pre", 120, 375)
 	   .text("13,97 €", 290, 375)
@@ -186,8 +188,46 @@ app.get('/submit', function(req, res) {
 	   .text("13,97 €", 290, 395)
 	   .text("7", 358, 395)
 	   .text("15,00 €", 399, 395)
-	   .text("15,00 €", 467, 395);
-	   
+	   .text("15,00 €", 467, 395);*/
+	
+	var positionY = 375;
+	var sum = 0;
+	for (var i = 0; i <= order.numOfRow; i++) {
+		doc.text(order.menge[i], 73, positionY)
+		   .text(order.beschreibung[i], 120, positionY)
+		   .text(order.preisOhneUSt[i] + " €", 290, positionY)
+		   .text(order.ust[i], 358, positionY)
+		   .text(order.preisMitUSt[i] + " €", 399, positionY)
+		   .text(order.gesamtPreis[i] + " €", 467, positionY);
+		positionY += 20;
+		if (order.gesamtPreis[i].indexOf(",") >= 0)
+			var str = order.gesamtPreis[i].replace(",", ".");
+		sum += parseFloat(str);
+	}
+	doc.lineWidth(2)
+	   .moveTo(73, positionY)
+	   .lineTo(540, positionY)
+	   .stroke();
+	sum = sum.toString();
+	sum = sum.replace(".", ",");
+	if (sum.length == 2)
+		sum += ",00";
+	else if (sum.length == 4)
+		sum += "0";
+	doc.text(sum + " €", 467, positionY + 15);
+	doc.font("Helvetica-Bold")
+	   .text("GESAMT:", 407, positionY + 15);
+
+	doc.font("Helvetica")
+	   .fontSize(8)
+	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
+	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
+	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
+	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
+	doc.moveDown()
+	   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
+	doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
+	
 	doc.end();
 
 	address.customerName = "";
