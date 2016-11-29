@@ -24,6 +24,7 @@ function sendOrder() {
 			+ "&ust=" + escape(ust)
 			+ "&preisMitUSt=" + escape(preisMitUSt)
 			+ "&gesamtPreis=" + escape(gesamtPreis);
+	url = url.replace(/\+/g, "%2B");
 	request.open("GET", url, true);
 //	request.onreadystatechange = updatePage;
 	request.send();
