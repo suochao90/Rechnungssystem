@@ -5,6 +5,7 @@ var express = require('express'),
 
 var PDF = require('pdfkit');
 var fs = require('fs');
+var calculate = require('./calculate.js');
 
 var Address = function() {
 	this.customerName;
@@ -29,6 +30,20 @@ var address = new Address();
 var order = new Order();
 
 var invoiceIndex = 1;
+
+function euroOutput(num) {
+	num = num.toString();
+	num = num.replace(".", ",");
+	if (num.indexOf(",") < 0)
+		num += ",00";
+	else {
+		var temp = num.split(",");
+		if (temp[1].length == 1)
+			num += "0";
+	}
+		
+	return num;
+}
 
 app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
@@ -191,6 +206,7 @@ app.get('/submit', function(req, res) {
 	   .text("15,00 €", 467, 395);*/
 	
 	var positionY = 375;
+	var nettoSum = 0;
 	var sum = 0;
 	for (var i = 0; i <= order.numOfRow; i++) {
 		doc.text(order.menge[i], 73, positionY)
@@ -200,23 +216,27 @@ app.get('/submit', function(req, res) {
 		   .text(order.preisMitUSt[i] + " €", 399, positionY)
 		   .text(order.gesamtPreis[i] + " €", 467, positionY);
 		positionY += 20;
+		if (order.preisOhneUSt[i].indexOf(",") >= 0)
+			var strNetto = order.preisOhneUSt[i].replace(",", ".");
+		nettoSum = calculate.add(nettoSum, calculate.mul(parseFloat(strNetto), parseInt(order.menge[i])));
 		if (order.gesamtPreis[i].indexOf(",") >= 0)
-			var str = order.gesamtPreis[i].replace(",", ".");
-		sum += parseFloat(str);
+			var strSum = order.gesamtPreis[i].replace(",", ".");
+		sum = calculate.add(sum, parseFloat(strSum));
 	}
 	doc.lineWidth(2)
 	   .moveTo(73, positionY)
 	   .lineTo(540, positionY)
 	   .stroke();
-	sum = sum.toString();
-	sum = sum.replace(".", ",");
-	if (sum.length == 2)
-		sum += ",00";
-	else if (sum.length == 4)
-		sum += "0";
+//	var ustSum = (sum * 100 - nettoSum * 100) / 100;
+	var ustSum = calculate.sub(sum, nettoSum);
+	nettoSum = euroOutput(nettoSum);
+	ustSum = euroOutput(ustSum);
+	sum = euroOutput(sum);
 	doc.text(sum + " €", 467, positionY + 15);
 	doc.font("Helvetica-Bold")
 	   .text("GESAMT:", 407, positionY + 15);
+	doc.text(nettoSum);
+	doc.text(ustSum);
 
 	doc.font("Helvetica")
 	   .fontSize(8)
