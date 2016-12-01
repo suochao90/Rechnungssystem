@@ -32,8 +32,10 @@ var order = new Order();
 var invoiceIndex = 1;
 
 function euroOutput(num) {
-	num = num.toString();
-	num = num.replace(".", ",");
+	if (typeof num != "string")
+		num = num.toString();
+	if (num.indexOf(".") >= 0)
+		num = num.replace(".", ",");
 	if (num.indexOf(",") < 0)
 		num += ",00";
 	else {
@@ -79,10 +81,10 @@ app.get('/sendOrder', function(req, res) {
 	for (var i = 0; i <= order.numOfRow; i++) {
 		order.beschreibung[i] = tempBeschreibung[i];
 		order.menge[i] = tempMenge[i];
-		order.preisOhneUSt[i] = tempPreisOhneUSt[i];
+		order.preisOhneUSt[i] = euroOutput(tempPreisOhneUSt[i]);
 		order.ust[i] = tempUSt[i];
-		order.preisMitUSt[i] = tempPreisMitUSt[i];
-		order.gesamtPreis[i] = tempGesamtPreis[i];
+		order.preisMitUSt[i] = euroOutput(tempPreisMitUSt[i]);
+		order.gesamtPreis[i] = euroOutput(tempGesamtPreis[i]);
 	}
 	console.log(order);
 });
@@ -227,16 +229,20 @@ app.get('/submit', function(req, res) {
 	   .moveTo(73, positionY)
 	   .lineTo(540, positionY)
 	   .stroke();
-//	var ustSum = (sum * 100 - nettoSum * 100) / 100;
 	var ustSum = calculate.sub(sum, nettoSum);
 	nettoSum = euroOutput(nettoSum);
 	ustSum = euroOutput(ustSum);
 	sum = euroOutput(sum);
-	doc.text(sum + " €", 467, positionY + 15);
+	doc.text(nettoSum + " €", 467, positionY + 10);
+	doc.text("Nettobetrag:", 370, positionY + 10);
+	doc.text(ustSum + " €", 467, positionY + 30);
+	doc.text("Umsatzsteuern:", 370, positionY + 30);
+	doc.moveTo(370, positionY + 50)
+	   .lineTo(540, positionY + 50)
+	   .stroke();
 	doc.font("Helvetica-Bold")
-	   .text("GESAMT:", 407, positionY + 15);
-	doc.text(nettoSum);
-	doc.text(ustSum);
+	   .text(sum + " €", 467, positionY + 60);
+	doc.text("GESAMT:", 370, positionY + 60);
 
 	doc.font("Helvetica")
 	   .fontSize(8)
