@@ -36,9 +36,9 @@ function euroOutput(num) {
 		num = num.toString();
 	if (num.indexOf(".") >= 0)
 		num = num.replace(".", ",");
-	if (num.indexOf(",") < 0)
+	if (num != "" && num.indexOf(",") < 0)
 		num += ",00";
-	else {
+	if (num.indexOf(",") >= 0) {
 		var temp = num.split(",");
 		if (temp[1].length == 1)
 			num += "0";
@@ -78,6 +78,7 @@ app.get('/sendOrder', function(req, res) {
 	var tempUSt = req.query.ust.split("|");
 	var tempPreisMitUSt = req.query.preisMitUSt.split("|");
 	var tempGesamtPreis = req.query.gesamtPreis.split("|");
+
 	for (var i = 0; i <= order.numOfRow; i++) {
 		order.beschreibung[i] = tempBeschreibung[i];
 		order.menge[i] = tempMenge[i];
