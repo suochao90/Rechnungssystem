@@ -26,7 +26,7 @@ function sendOrder() {
 			+ "&gesamtPreis=" + escape(gesamtPreis);
 	url = url.replace(/\+/g, "%2B");
 	request.open("GET", url, true);
-//	request.onreadystatechange = updatePage;
+	request.onreadystatechange = updatePage;
 	request.send();
 }
 
@@ -40,7 +40,8 @@ function recoveryOrder() {
 function updatePage() {
 	if (request.readyState == 4 && request.status == 200) {
 		var response = request.responseText.split("#");
-		addRow(response[0]);
+		if (response[7] === "recovery")
+			addRow(response[0]);
 		
 		var beschreibung = response[1].split("|");
 		var menge = response[2].split("|");

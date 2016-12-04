@@ -32,8 +32,9 @@ var order = new Order();
 var invoiceIndex = 1;
 
 function euroOutput(num) {
-	if (typeof num != "string")
-		num = num.toString();
+	if (typeof num == "number") {
+		num = num.toFixed(2).toString();
+	}
 	if (num.indexOf(".") >= 0)
 		num = num.replace(".", ",");
 	if (num != "" && num.indexOf(",") < 0)
@@ -116,10 +117,24 @@ app.get('/sendOrder', function(req, res) {
 		order.preisMitUSt[i] = euroOutput(tempPreisMitUSt[i]);
 		order.gesamtPreis[i] = euroOutput(tempGesamtPreis[i]);
 
-		if (tempPreisOhneUSt[i] != "" && tempUSt[i] != "" && tempPreisMitUSt[i] == "") {
-			if (tempPreisOhneUSt[i].indexOf(",") >= 0)
-				var str = tempPreisOhneUSt[i].replace(",", ".");
+		if (tempPreisOhneUSt[i] != "" && tempUSt[i] != "") {
+			if (euroOutput(tempPreisOhneUSt[i]).indexOf(",") >= 0)
+				var str = euroOutput(tempPreisOhneUSt[i]).replace(",", ".");
 			order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
+			
+			if (tempMenge[i] != "")
+				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisMitUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
+		}
+
+		if (tempPreisMitUSt[i] != "") {
+			var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
+			if (tempMenge[i] != "") {
+				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
+			}
+
+			if (tempUSt[i] != "") {
+				order.preisOhneUSt[i] = euroOutput(calculate.div(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
+			}
 		}
 	}
 	
