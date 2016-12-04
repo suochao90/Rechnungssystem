@@ -58,6 +58,9 @@ function updatePage() {
 			document.getElementById("preisMitUSt" + i).value = preisMitUSt[i];
 			document.getElementById("gesamtPreis" + i).value = gesamtPreis[i];
 		}
+
+		if (response[0] == 0)
+			document.getElementById("menge0").value = "1";
 	}
 }
 

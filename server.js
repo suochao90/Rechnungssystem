@@ -303,6 +303,16 @@ app.get('/submit', function(req, res) {
 	address.plz = "";
 	address.ort = "";
 	address.land = "";
+
+	for (var i = 0; i <= order.numOfRow; i++) {
+		order.beschreibung[i] = "";
+		order.menge[i] = "";
+		order.preisOhneUSt[i] = "";
+		order.ust[i] = "";
+		order.preisMitUSt[i] = "";
+		order.gesamtPreis[i] = "";
+	}
+	order.numOfRow = 0;
 	console.log(req.query);
 	res.send("<script>window.location.href='/pdf/invoice.pdf';</script>");
 });
