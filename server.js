@@ -47,6 +47,35 @@ function euroOutput(num) {
 	return num;
 }
 
+function createText(textType) {
+	var beschreibung = order.beschreibung[0];
+	var menge  = order.menge[0];
+	var preisOhneUSt = order.preisOhneUSt[0];
+	var ust = order.ust[0];
+	var preisMitUSt = order.preisMitUSt[0];
+	var gesamtPreis = order.gesamtPreis[0];
+
+	for (var i = 1; i <= order.numOfRow; i++) {
+		beschreibung = beschreibung + "|" + order.beschreibung[i];
+		menge = menge + "|" + order.menge[i];
+		preisOhneUSt = preisOhneUSt + "|" + order.preisOhneUSt[i];
+		ust = ust + "|" + order.ust[i];
+		preisMitUSt = preisMitUSt + "|" + order.preisMitUSt[i];
+		gesamtPreis = gesamtPreis + "|" + order.gesamtPreis[i];
+	}
+
+	var text = order.numOfRow + "#"
+			 + beschreibung + "#"
+			 + menge + "#"
+			 + preisOhneUSt + "#"
+			 + ust + "#"
+			 + preisMitUSt + "#"
+			 + gesamtPreis + "#"
+			 + textType;
+	
+	return text;
+}
+
 app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
 
@@ -86,37 +115,21 @@ app.get('/sendOrder', function(req, res) {
 		order.ust[i] = tempUSt[i];
 		order.preisMitUSt[i] = euroOutput(tempPreisMitUSt[i]);
 		order.gesamtPreis[i] = euroOutput(tempGesamtPreis[i]);
+
+		if (tempPreisOhneUSt[i] != "" && tempUSt[i] != "" && tempPreisMitUSt[i] == "") {
+			if (tempPreisOhneUSt[i].indexOf(",") >= 0)
+				var str = tempPreisOhneUSt[i].replace(",", ".");
+			order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
+		}
 	}
+	
+	res.send(createText("calculate"));
 	console.log(order);
 });
 
 app.get('/recoveryOrder', function(req, res) {
 	if (typeof order.numOfRow != "undefined") {
-		var beschreibung = order.beschreibung[0];
-		var menge  = order.menge[0];
-		var preisOhneUSt = order.preisOhneUSt[0];
-		var ust = order.ust[0];
-		var preisMitUSt = order.preisMitUSt[0];
-		var gesamtPreis = order.gesamtPreis[0];
-
-		for (var i = 1; i <= order.numOfRow; i++) {
-			beschreibung = beschreibung + "|" + order.beschreibung[i];
-			menge = menge + "|" + order.menge[i];
-			preisOhneUSt = preisOhneUSt + "|" + order.preisOhneUSt[i];
-			ust = ust + "|" + order.ust[i];
-			preisMitUSt = preisMitUSt + "|" + order.preisMitUSt[i];
-			gesamtPreis = gesamtPreis + "|" + order.gesamtPreis[i];
-		}
-
-		var text = order.numOfRow + "#"
-				 + beschreibung + "#"
-				 + menge + "#"
-				 + preisOhneUSt + "#"
-				 + ust + "#"
-				 + preisMitUSt + "#"
-				 + gesamtPreis;
-		
-		res.send(text);
+		res.send(createText("recovery"));
 	}
 });
 
