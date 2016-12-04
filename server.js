@@ -160,14 +160,21 @@ app.get('/submit', function(req, res) {
 	doc.fontSize(12)
 	   .text('Rechnungsadresse:');
 
-/*	var text = address.customerName + "\n"
-			 + address.street + ", "
-			 + address.zusatz + "\n"
-			 + address.plz + " "
-			 + address.ort + "\n"
-			 + address.land;
-*/
-	var text = "Chao Suo\nEmsstr. 2a, Zimmer 521\n38120 Braunschweig\nDeutschland";
+	if (address.zusatz != "")
+		var text = address.customerName + "\n"
+				 + address.street + ", "
+				 + address.zusatz + "\n"
+				 + address.plz + " "
+				 + address.ort + "\n"
+				 + address.land;
+	else
+		var text = address.customerName + "\n"
+				 + address.street + "\n"
+				 + address.plz + " "
+				 + address.ort + "\n"
+				 + address.land;
+
+//	var text = "Chao Suo\nEmsstr. 2a, Zimmer 521\n38120 Braunschweig\nDeutschland";
 	doc.font('Helvetica')
 	   .text(text);
 
@@ -176,11 +183,20 @@ app.get('/submit', function(req, res) {
 			  + "40547 Düsseldorf" + "\n"
 			  + "Deutschland" + "\n"
 			  + "USt-ID: DE305531798"
+	
+	var yijia = "Germany Yijia trade & investment GmbH" + "\n"
+	          + "Wagnerstraße 31" + "\n"
+			  + "40212 Düsseldorf" + "\n"
+			  + "Deutschland" + "\n"
+			  + "USt-ID: DE308750154"
 	for(i = 0; i < 5; i++) {
 		doc.moveUp();
 	}
-	doc.font('Helvetica-Bold')
-	   .text(ihtct, {align: 'right'});
+	doc.font('Helvetica-Bold');
+	if (req.query.company == "ihtct")
+		doc.text(ihtct, {align: 'right'});
+	else
+		doc.text(yijia, {align: 'right'});
 
 	var date = new Date();
 	var year = date.getFullYear();
@@ -221,21 +237,6 @@ app.get('/submit', function(req, res) {
 	   .stroke();
 
 	doc.font('Helvetica');
-
-/*	doc.font('Helvetica')
-	   .text("1", 73, 375)
-	   .text("Aptamil Pre", 120, 375)
-	   .text("13,97 €", 290, 375)
-	   .text("7", 358, 375)
-	   .text("15,00 €", 399, 375)
-	   .text("15,00 €", 467, 375);
-	doc.text("1", 73, 395)
-	   .text("Aptamil 1", 120, 395)
-	   .text("13,97 €", 290, 395)
-	   .text("7", 358, 395)
-	   .text("15,00 €", 399, 395)
-	   .text("15,00 €", 467, 395);*/
-	
 	var positionY = 375;
 	var nettoSum = 0;
 	var sum = 0;
@@ -275,13 +276,24 @@ app.get('/submit', function(req, res) {
 
 	doc.font("Helvetica")
 	   .fontSize(8)
-	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
-	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
-	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
-	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
-	doc.moveDown()
-	   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
-	doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
+	if (req.query.company == "ihtct") {
+		doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
+		doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
+		doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
+		doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
+		doc.moveDown()
+		   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
+		doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
+	}
+	else {
+		doc.text("Germany Yijia trade & investment GmbH, Wagnerstraße 31, 40212 Düsseldorf", 73, 655, {align: 'center'});
+		doc.text("Inhaber: Yilin Wu; AG Düsseldorf, HRB 76481", {align: 'center'});
+		doc.text("USt-ID-Nummer: DE308750154", {align: 'center'});
+		doc.text("E-Mail: germanyyijia@gmail.com", {align: 'center'});
+		doc.moveDown()
+		   .text("Bankverbindubng: BANK OF CHINA ZWEIGNIEDERLASSUNG FRANKRURT", {align: 'center'});
+		doc.text("IBAN: DE94 5141 0700 9700 3222 84, BIC: BKCHDEFFXXX", {align: 'center'});
+	}
 	
 	doc.end();
 
