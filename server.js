@@ -117,7 +117,7 @@ app.get('/sendOrder', function(req, res) {
 		order.preisMitUSt[i] = euroOutput(tempPreisMitUSt[i]);
 		order.gesamtPreis[i] = euroOutput(tempGesamtPreis[i]);
 
-		if (tempPreisOhneUSt[i] != "" && tempUSt[i] != "") {
+		if (tempPreisOhneUSt[i] != "" && tempUSt[i] != "" && tempPreisMitUSt[i] == "") {
 			if (euroOutput(tempPreisOhneUSt[i]).indexOf(",") >= 0)
 				var str = euroOutput(tempPreisOhneUSt[i]).replace(",", ".");
 			order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
@@ -126,7 +126,7 @@ app.get('/sendOrder', function(req, res) {
 				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisMitUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
 		}
 
-		if (tempPreisMitUSt[i] != "") {
+		if (tempPreisMitUSt[i] != "" && tempPreisOhneUSt == "") {
 			var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
 			if (tempMenge[i] != "") {
 				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));

@@ -40,8 +40,13 @@ function recoveryOrder() {
 function updatePage() {
 	if (request.readyState == 4 && request.status == 200) {
 		var response = request.responseText.split("#");
-		if (response[7] === "recovery")
+		if (response[7] === "recovery") {
 			addRow(response[0]);
+			if (response[0] == 0) {
+				console.log(response[0])
+				document.getElementById("menge0").value = "1";
+			}
+		}
 		
 		var beschreibung = response[1].split("|");
 		var menge = response[2].split("|");
@@ -58,8 +63,8 @@ function updatePage() {
 			document.getElementById("preisMitUSt" + i).value = preisMitUSt[i];
 			document.getElementById("gesamtPreis" + i).value = gesamtPreis[i];
 		}
-
-		if (response[0] == 0)
+		
+		if (response[0] == 0 && response[7] === "recovery")
 			document.getElementById("menge0").value = "1";
 	}
 }
