@@ -7,6 +7,23 @@ var PDF = require('pdfkit');
 var fs = require('fs');
 var calculate = require('./calculate.js');
 
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '111111',
+  database : 'Rechnungssystem'
+});
+
+connection.connect();
+
+connection.query('SELECT * FROM Rechnungsadresse', function(error, results, fields) {
+	if (error) throw error;
+	console.log(results);
+});
+
+connection.end();
+
 var Address = function() {
 	this.customerName;
 	this.street;
