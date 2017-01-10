@@ -16,13 +16,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
-connection.query('SELECT * FROM Rechnungsadresse', function(error, results, fields) {
-	if (error) throw error;
-	console.log(results);
-});
-
-connection.end();
+//connection.end();
 
 var Address = function() {
 	this.customerName;
@@ -98,6 +92,22 @@ app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/sendAddress', function(req, res) {
+	if (req.query.name != "" &&
+	    req.query.street != "" &&
+	    req.query.plz != "" &&
+	    req.query.ort != "" &&
+	    req.query.land != "") {
+		var values = "('" + req.query.name + "','"
+				   + req.query.street + "','"
+				   + req.query.zusatz + "','"
+				   + req.query.plz + "','"
+				   + req.query.ort + "','"
+				   + req.query.land + "')";
+		connection.query('insert into Rechnungsadresse values' + values, function(error, results, fields) {
+			if (error) throw error;
+			console.log(results);
+		});
+	}
 	address.customerName = req.query.name;
 	address.street = req.query.street;
 	address.zusatz = req.query.zusatz;
