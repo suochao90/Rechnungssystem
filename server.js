@@ -92,7 +92,34 @@ app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/sendAddress', function(req, res) {
-	if (req.query.name != "" &&
+	address.customerName = req.query.name;
+	address.street = req.query.street;
+	address.zusatz = req.query.zusatz;
+	address.plz = req.query.plz;
+	address.ort = req.query.ort;
+	address.land = req.query.land;
+	if (req.query.name != "") {
+		connection.query('select * from Rechnungsadresse where Name=' + '"' + req.query.name + '"', function(error, results, fields) {
+			if (error) throw error;
+			if (typeof results[0] != "undefined") {
+				address.customerName = results[0].Name;
+				address.street = results[0].SuH;
+				address.zusatz = results[0].Adresszusatz;
+				address.plz = results[0].PLZ;
+				address.ort = results[0].Ort;
+				address.land = results[0].Land;
+				
+				var text = address.customerName + "|"
+						 + address.street + "|"
+						 + address.zusatz + "|"
+						 + address.plz + "|"
+						 + address.ort + "|"
+						 + address.land;
+				res.send(text);
+			}
+		});
+	}
+/*	if (req.query.name != "" &&
 	    req.query.street != "" &&
 	    req.query.plz != "" &&
 	    req.query.ort != "" &&
@@ -107,13 +134,7 @@ app.get('/sendAddress', function(req, res) {
 			if (error) throw error;
 			console.log(results);
 		});
-	}
-	address.customerName = req.query.name;
-	address.street = req.query.street;
-	address.zusatz = req.query.zusatz;
-	address.plz = req.query.plz;
-	address.ort = req.query.ort;
-	address.land = req.query.land;
+	}*/
 	console.log(req.query);
 });
 

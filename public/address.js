@@ -12,7 +12,7 @@ function sendAddress() {
 			+ "&ort=" + escape(ort)
 			+ "&land=" + escape(land);
 	request.open("GET", url, true);
-//	request.onreadystatechange = updatePage;
+	request.onreadystatechange = updatePage;
 	request.send();
 }
 
