@@ -119,22 +119,6 @@ app.get('/sendAddress', function(req, res) {
 			}
 		});
 	}
-/*	if (req.query.name != "" &&
-	    req.query.street != "" &&
-	    req.query.plz != "" &&
-	    req.query.ort != "" &&
-	    req.query.land != "") {
-		var values = "('" + req.query.name + "','"
-				   + req.query.street + "','"
-				   + req.query.zusatz + "','"
-				   + req.query.plz + "','"
-				   + req.query.ort + "','"
-				   + req.query.land + "')";
-		connection.query('insert into Rechnungsadresse values' + values, function(error, results, fields) {
-			if (error) throw error;
-			console.log(results);
-		});
-	}*/
 	console.log(req.query);
 });
 
@@ -368,12 +352,41 @@ app.get('/submit', function(req, res) {
 	
 	doc.end();
 
-	address.customerName = "";
-	address.street = "";
-	address.zusatz = "";
-	address.plz = "";
-	address.ort = "";
-	address.land = "";
+	if (address.customerName != "") {
+		connection.query('select * from Rechnungsadresse where Name=' + '"' + address.customerName + '"', function(error, results, fields) {
+			if (error) throw error;
+			if (typeof results[0] == "undefined") {
+				if (address.customerName != "" &&
+					address.street != "" &&
+					address.plz != "" &&
+					address.ort != "" &&
+					address.land != "") {
+					var values = "('" + address.customerName + "','"
+							   + address.street + "','"
+							   + address.zusatz + "','"
+							   + address.plz + "','"
+							   + address.ort + "','"
+							   + address.land + "')";
+					connection.query('insert into Rechnungsadresse values' + values, function(error, results, fields) {
+						if (error) throw error;
+						address.customerName = "";
+						address.street = "";
+						address.zusatz = "";
+						address.plz = "";
+						address.ort = "";
+						address.land = "";
+					});
+				}
+			} else {
+				address.customerName = "";
+				address.street = "";
+				address.zusatz = "";
+				address.plz = "";
+				address.ort = "";
+				address.land = "";
+			}
+		});
+	}
 
 	for (var i = 0; i <= order.numOfRow; i++) {
 		order.beschreibung[i] = "";
