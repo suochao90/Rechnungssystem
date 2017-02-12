@@ -134,7 +134,7 @@ app.get('/recoveryAddress', function(req, res) {
 
 app.get('/sendOrder', function(req, res) {
 	order.numOfRow = req.query.numOfRow;
-	var tempBeschreibung = req.query.beschreibung.split("|");
+	var tempBeschreibung = unescape(req.query.beschreibung).split("|");
 	var tempMenge = req.query.menge.split("|");
 	var tempPreisOhneUSt = req.query.preisOhneUSt.split("|");
 	var tempUSt = req.query.ust.split("|");
