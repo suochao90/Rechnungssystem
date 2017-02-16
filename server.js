@@ -229,7 +229,6 @@ app.get('/submit', function(req, res) {
 				 + address.ort + "\n"
 				 + address.land;
 
-//	var text = "Chao Suo\nEmsstr. 2a, Zimmer 521\n38120 Braunschweig\nDeutschland";
 	doc.font('Helvetica')
 	   .text(text);
 
