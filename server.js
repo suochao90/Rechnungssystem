@@ -268,7 +268,7 @@ app.get('/submit', function(req, res) {
 		doc.font('Helvetica-Bold')
 		   .text("Angebotsnummer: ", {continued: true});
 		doc.font('Helvetica')
-		   .text("A" + year + month + day + invoiceIndex);
+		   .text("A" + year + month + day + offerIndex);
 		offerIndex++;
 	} else {
 		doc.text("Rechnungsdatum: ", {continued: true});
