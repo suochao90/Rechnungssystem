@@ -238,19 +238,12 @@ app.get('/submit', function(req, res) {
 			  + "Deutschland" + "\n"
 			  + "USt-ID: DE305531798"
 	
-	var yijia = "Germany Yijia trade & investment GmbH" + "\n"
-	          + "Wagnerstraße 31" + "\n"
-			  + "40212 Düsseldorf" + "\n"
-			  + "Deutschland" + "\n"
-			  + "USt-ID: DE308750154"
 	for(i = 0; i < 5; i++) {
 		doc.moveUp();
 	}
 	doc.font('Helvetica-Bold');
-	if (req.query.company == "ihtct")
-		doc.text(ihtct, {align: 'right'});
-	else
-		doc.text(yijia, {align: 'right'});
+//	if (req.query.type == "order")
+	doc.text(ihtct, {align: 'right'});
 
 	var date = new Date();
 	var year = date.getFullYear();
@@ -330,24 +323,13 @@ app.get('/submit', function(req, res) {
 
 	doc.font("Helvetica")
 	   .fontSize(8)
-	if (req.query.company == "ihtct") {
-		doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
-		doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
-		doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
-		doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
-		doc.moveDown()
-		   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
-		doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
-	}
-	else {
-		doc.text("Germany Yijia trade & investment GmbH, Wagnerstraße 31, 40212 Düsseldorf", 73, 655, {align: 'center'});
-		doc.text("Inhaber: Yilin Wu; AG Düsseldorf, HRB 76481", {align: 'center'});
-		doc.text("USt-ID-Nummer: DE308750154", {align: 'center'});
-		doc.text("E-Mail: germanyyijia@gmail.com", {align: 'center'});
-		doc.moveDown()
-		   .text("Bankverbindubng: BANK OF CHINA ZWEIGNIEDERLASSUNG FRANKRURT", {align: 'center'});
-		doc.text("IBAN: DE94 5141 0700 9700 3222 84, BIC: BKCHDEFFXXX", {align: 'center'});
-	}
+	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
+	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
+	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
+	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
+	doc.moveDown()
+	   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
+	doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
 	
 	doc.end();
 
