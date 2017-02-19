@@ -41,6 +41,7 @@ var address = new Address();
 var order = new Order();
 
 var invoiceIndex = 1;
+var offerIndex = 1;
 
 function euroOutput(num) {
 	if (typeof num == "number") {
@@ -208,12 +209,16 @@ app.get('/submit', function(req, res) {
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
 	doc.font('Helvetica-Bold')
-	   .fontSize(20)
-	   .text('RECHNUNG', {align: 'center'})
-	   .moveDown(2);
+	   .fontSize(20);
+	if (req.query.type == "offer")
+		doc.text('ANGEBOT', {align: 'center'});
+	else
+		doc.text('RECHNUNG', {align: 'center'});
+	doc .moveDown(2);
 	
-	doc.fontSize(12)
-	   .text('Rechnungsadresse:');
+	doc.fontSize(12);
+	if (req.query.type == "order")
+	   doc.text('Rechnungsadresse:');
 
 	if (address.zusatz != "")
 		var text = address.customerName + "\n"
@@ -242,7 +247,6 @@ app.get('/submit', function(req, res) {
 		doc.moveUp();
 	}
 	doc.font('Helvetica-Bold');
-//	if (req.query.type == "order")
 	doc.text(ihtct, {align: 'right'});
 
 	var date = new Date();
@@ -255,16 +259,27 @@ app.get('/submit', function(req, res) {
 	if (day >= 0 && day <= 9) {
 		day = "0" + day;
 	}
-	var invoiceDate = day + "." + month + "." + year;
+	var date = day + "." + month + "." + year;
 	doc.moveDown(3);
-	doc.text("Rechnungsdatum: ", {continued: true});
-	doc.font('Helvetica')
-	   .text(invoiceDate);
-	doc.font('Helvetica-Bold')
-	   .text("Rechnungsnummer: ", {continued: true});
-	doc.font('Helvetica')
-	   .text("DE" + year + month + day + invoiceIndex);
-	invoiceIndex++;
+	if (req.query.type == "offer") {
+		doc.text("Angebotsdatum: ", {continued: true});
+		doc.font('Helvetica')
+		   .text(date);
+		doc.font('Helvetica-Bold')
+		   .text("Angebotsnummer: ", {continued: true});
+		doc.font('Helvetica')
+		   .text("A" + year + month + day + invoiceIndex);
+		offerIndex++;
+	} else {
+		doc.text("Rechnungsdatum: ", {continued: true});
+		doc.font('Helvetica')
+		   .text(date);
+		doc.font('Helvetica-Bold')
+		   .text("Rechnungsnummer: ", {continued: true});
+		doc.font('Helvetica')
+		   .text("R" + year + month + day + invoiceIndex);
+		invoiceIndex++;
+	}
 
 	doc.moveTo(73, 295)
 	   .lineTo(540, 295)
@@ -321,8 +336,15 @@ app.get('/submit', function(req, res) {
 	   .text(sum + " €", 467, positionY + 60);
 	doc.text("GESAMT:", 370, positionY + 60);
 
+	if (req.query.type == "offer") {
+		doc.font("Helvetica")
+		   .text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 100)
+		   .moveDown()
+		   .text("Zur Annahme des Angebots überweisen Sie uns den Gesamtbetrag unter Angabe der Angebotsnummer. Nach Erhalt des oben genannten Betrages werden wir mit Ihnen die Warenübergabe abstimmen.");
+	}
+
 	doc.font("Helvetica")
-	   .fontSize(8)
+	   .fontSize(8);
 	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
 	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
 	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
