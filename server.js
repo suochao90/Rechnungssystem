@@ -93,12 +93,12 @@ app.set('port', 8080);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/sendAddress', function(req, res) {
-	address.customerName = req.query.name;
-	address.street = req.query.street;
-	address.zusatz = req.query.zusatz;
-	address.plz = req.query.plz;
-	address.ort = req.query.ort;
-	address.land = req.query.land;
+	address.customerName = unescape(req.query.name);
+	address.street = unescape(req.query.street);
+	address.zusatz = unescape(req.query.zusatz);
+	address.plz = unescape(req.query.plz);
+	address.ort = unescape(req.query.ort);
+	address.land = unescape(req.query.land);
 	if (req.query.name != "") {
 		connection.query('select * from Rechnungsadresse where Name=' + '"' + req.query.name + '"', function(error, results, fields) {
 			if (error) throw error;
