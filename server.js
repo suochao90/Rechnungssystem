@@ -208,12 +208,15 @@ app.get('/submit', function(req, res) {
 	var doc = new PDF();
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
+	doc.image('logo.png', 73, 36, {
+		fit: [90, 55]
+	});
 	doc.font('Helvetica-Bold')
 	   .fontSize(20);
 	if (req.query.type == "offer")
-		doc.text('ANGEBOT', {align: 'center'});
+		doc.text('ANGEBOT', {align: 'right'});
 	else
-		doc.text('RECHNUNG', {align: 'center'});
+		doc.text('RECHNUNG', {align: 'right'});
 	doc .moveDown(2);
 	
 	doc.fontSize(12);
@@ -271,7 +274,7 @@ app.get('/submit', function(req, res) {
 		   .text("A" + year + month + day + offerIndex);
 		offerIndex++;
 	} else {
-		doc.text("Rechnungsdatum: ", {continued: true});
+		doc.text("Rechnungsdatum / Lieferdatum: ", {continued: true});
 		doc.font('Helvetica')
 		   .text(date);
 		doc.font('Helvetica-Bold')
