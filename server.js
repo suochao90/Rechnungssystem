@@ -306,19 +306,21 @@ app.get('/submit', function(req, res) {
 	var nettoSum = 0;
 	var sum = 0;
 	for (var i = 0; i <= order.numOfRow; i++) {
-		doc.text(order.menge[i], 73, positionY)
-		   .text(order.beschreibung[i], 120, positionY)
-		   .text(order.preisOhneUSt[i] + " €", 290, positionY)
-		   .text(order.ust[i], 358, positionY)
-		   .text(order.preisMitUSt[i] + " €", 399, positionY)
-		   .text(order.gesamtPreis[i] + " €", 467, positionY);
-		positionY += 20;
-		if (order.preisOhneUSt[i].indexOf(",") >= 0)
-			var strNetto = order.preisOhneUSt[i].replace(",", ".");
-		nettoSum = calculate.add(nettoSum, calculate.mul(parseFloat(strNetto), parseInt(order.menge[i])));
-		if (order.gesamtPreis[i].indexOf(",") >= 0)
-			var strSum = order.gesamtPreis[i].replace(",", ".");
-		sum = calculate.add(sum, parseFloat(strSum));
+		if (order.menge[i] != '' && order.beschreibung[i] != '' && order.preisOhneUSt[i] != '' && order.ust[i] != '' && order.preisMitUSt[i] != '' && order.gesamtPreis != '') {
+			doc.text(order.menge[i], 73, positionY)
+			   .text(order.beschreibung[i], 120, positionY)
+			   .text(order.preisOhneUSt[i] + " €", 290, positionY)
+			   .text(order.ust[i], 358, positionY)
+			   .text(order.preisMitUSt[i] + " €", 399, positionY)
+			   .text(order.gesamtPreis[i] + " €", 467, positionY);
+			positionY += 20;
+			if (order.preisOhneUSt[i].indexOf(",") >= 0)
+				var strNetto = order.preisOhneUSt[i].replace(",", ".");
+			nettoSum = calculate.add(nettoSum, calculate.mul(parseFloat(strNetto), parseInt(order.menge[i])));
+			if (order.gesamtPreis[i].indexOf(",") >= 0)
+				var strSum = order.gesamtPreis[i].replace(",", ".");
+			sum = calculate.add(sum, parseFloat(strSum));
+		}
 	}
 	doc.lineWidth(2)
 	   .moveTo(73, positionY)
