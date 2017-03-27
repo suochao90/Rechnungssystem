@@ -159,16 +159,16 @@ app.get('/sendOrder', function(req, res) {
 			order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
 			
 			if (tempMenge[i] != "")
-				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisMitUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
+				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
 		}
 
 		if (tempPreisMitUSt[i] != "" && tempPreisOhneUSt[i] == "") {
 			var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
-			if (tempMenge[i] != "")
-				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
-
 			if (tempUSt[i] != "")
 				order.preisOhneUSt[i] = euroOutput(calculate.div(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
+			
+			if (tempMenge[i] != "")
+				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisOhneUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
 		}
 
 		if (tempPreisOhneUSt[i] != "" && tempPreisMitUSt[i] != "") {
@@ -178,16 +178,16 @@ app.get('/sendOrder', function(req, res) {
 				order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
 				
 				if (tempMenge[i] != "")
-					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisMitUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
+					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
 			} else if (tempPreisMitUSt[i] != lastPMU) {
 				var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
-				if (tempMenge[i] != "")
-					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
-
 				if (tempUSt[i] != "")
 					order.preisOhneUSt[i] = euroOutput(calculate.div(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
+				
+				if (tempMenge[i] != "")
+					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisOhneUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
 			} else {
-				var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
+				var str = euroOutput(tempPreisOhneUSt[i]).replace(",", ".");
 				if (tempMenge[i] != "")
 					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
 			}
