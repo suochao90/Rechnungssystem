@@ -292,10 +292,9 @@ app.get('/submit', function(req, res) {
 	doc.font('Helvetica-Bold')
 	   .text("Menge", 73, 337)
 	   .text("Beschreibung", 120, 337)
-	   .text("Stückpreis\n(ohne USt.)", 290, 330)
-	   .text("USt.%", 358, 337)
-	   .text("Stückpreis\n(inkl. USt.)", 399, 330)
-	   .text("Gesamtpreis\n(inkl. USt.)", 467, 330);
+	   .text("USt.%", 320, 337)
+	   .text("Stückpreis\n(ohne USt.)", 379, 330)
+	   .text("Gesamtpreis\n(ohne USt.)", 467, 330);
 	
 	doc.moveTo(73, 365)
 	   .lineTo(540, 365)
@@ -304,29 +303,26 @@ app.get('/submit', function(req, res) {
 	doc.font('Helvetica');
 	var positionY = 375;
 	var nettoSum = 0;
-	var sum = 0;
+	var ustSum = 0;
 	for (var i = 0; i <= order.numOfRow; i++) {
 		if (order.menge[i] != '' && order.beschreibung[i] != '' && order.preisOhneUSt[i] != '' && order.ust[i] != '' && order.preisMitUSt[i] != '' && order.gesamtPreis != '') {
 			doc.text(order.menge[i], 73, positionY)
 			   .text(order.beschreibung[i], 120, positionY)
-			   .text(order.preisOhneUSt[i] + " €", 290, positionY)
-			   .text(order.ust[i], 358, positionY)
-			   .text(order.preisMitUSt[i] + " €", 399, positionY)
+			   .text(order.ust[i], 320, positionY)
+			   .text(order.preisOhneUSt[i] + " €", 379, positionY)
 			   .text(order.gesamtPreis[i] + " €", 467, positionY);
 			positionY += 20;
-			if (order.preisOhneUSt[i].indexOf(",") >= 0)
-				var strNetto = order.preisOhneUSt[i].replace(",", ".");
-			nettoSum = calculate.add(nettoSum, calculate.mul(parseFloat(strNetto), parseInt(order.menge[i])));
 			if (order.gesamtPreis[i].indexOf(",") >= 0)
 				var strSum = order.gesamtPreis[i].replace(",", ".");
-			sum = calculate.add(sum, parseFloat(strSum));
+			nettoSum = calculate.add(nettoSum, parseFloat(strSum));
+			ustSum = calculate.add(ustSum, calculate.mul(parseFloat(strSum), calculate.div(parseInt(order.ust[i]), 100)));
 		}
 	}
 	doc.lineWidth(2)
 	   .moveTo(73, positionY)
 	   .lineTo(540, positionY)
 	   .stroke();
-	var ustSum = calculate.sub(sum, nettoSum);
+	var sum = calculate.add(nettoSum, ustSum);
 	nettoSum = euroOutput(nettoSum);
 	ustSum = euroOutput(ustSum);
 	sum = euroOutput(sum);
@@ -339,7 +335,7 @@ app.get('/submit', function(req, res) {
 	   .stroke();
 	doc.font("Helvetica-Bold")
 	   .text(sum + " €", 467, positionY + 60);
-	doc.text("GESAMT:", 370, positionY + 60);
+	doc.text("Bruttobetrag:", 370, positionY + 60);
 
 	if (req.query.type == "offer") {
 		doc.font("Helvetica")
