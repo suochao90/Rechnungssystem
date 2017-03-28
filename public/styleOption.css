@@ -45,17 +45,25 @@ form {
 }
 
 form label {
-	margin-left: 20px;
-	margin-right: 5px;
+	display: block;
+	margin: 30px 0 8px 37%;
+    font-size: 14px;
+    font-family: Tahoma;
+	font-weight: bold;
+}
+
+form div {
+	margin-left: 37%;
+	margin-top: 15px;
     font-size: 14px;
     font-family: Tahoma;
 }
 
-form div {
-	margin-left: 39%;
+form textarea {
+	margin-left: 37%;
 }
 
 form button {
 	margin-top: 20px;
-	margin-left: 46%;
+	margin-left: 47%;
 }

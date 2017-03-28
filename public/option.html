@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="styleOption.css">
+		<script type="text/javascript" src="header.js"></script>
+	</head>
+	<body id="body">
+		<script>
+			addHeader();
+		</script>
+		<form action="/submit" method="get">
+			<label>Typ auswählen *</label>
+			<div><input id="offer" name="type" type="radio" value="offer"/>Angebot</div> 
+			<div><input id="order" name="type" type="radio" value="order"/>Rechnung</div> 
+			
+			<label>Anmerkung</label>
+			<textarea rows="6" cols="50"></textarea>
+
+			<button type="submit">Datei erzeugen</button>
+		</form>
+	</body>
+</html>
