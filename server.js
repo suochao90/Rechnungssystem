@@ -205,6 +205,7 @@ app.get('/recoveryOrder', function(req, res) {
 });
 
 app.get('/submit', function(req, res) {
+	console.log(req.query);
 	var doc = new PDF();
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
@@ -338,10 +339,19 @@ app.get('/submit', function(req, res) {
 	doc.text("Bruttobetrag:", 370, positionY + 60);
 
 	if (req.query.type == "offer") {
-		doc.font("Helvetica")
-		   .text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 100)
-		   .moveDown()
-		   .text("Zur Annahme des Angebots überweisen Sie uns den Gesamtbetrag unter Angabe der Angebotsnummer. Nach Erhalt des oben genannten Betrages werden wir mit Ihnen die Warenübergabe abstimmen.");
+		doc.font("Helvetica");
+		if(req.query.remark != "")
+			doc.text(req.query.remark, 73, positionY + 100);
+		else {
+			doc.text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 100)
+			   .moveDown()
+			   .text("Zur Annahme des Angebots überweisen Sie uns den Gesamtbetrag unter Angabe der Angebotsnummer. Nach Erhalt des oben genannten Betrages werden wir mit Ihnen die Warenübergabe abstimmen.");
+		}
+	} else {
+		if(req.query.remark != "") {
+			doc.font("Helvetica")
+		       .text(req.query.remark, 73, positionY + 100);
+		}
 	}
 
 	doc.font("Helvetica")
