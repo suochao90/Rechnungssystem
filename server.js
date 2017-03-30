@@ -205,7 +205,6 @@ app.get('/recoveryOrder', function(req, res) {
 });
 
 app.get('/submit', function(req, res) {
-	console.log(req.query);
 	var doc = new PDF();
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
@@ -253,15 +252,30 @@ app.get('/submit', function(req, res) {
 	doc.font('Helvetica-Bold');
 	doc.text(ihtct, {align: 'right'});
 
-	var date = new Date();
-	var year = date.getFullYear();
-	var month = date.getMonth() + 1;
-	var day = date.getDate();
-	if (month >= 1 && month <= 9) {
-		month = "0" + month;
-	}
-	if (day >= 0 && day <= 9) {
-		day = "0" + day;
+	if (req.query.date != "") {
+		var date = req.query.date;
+		if (date.indexOf("-") >= 0) {
+			var splitDate = date.split("-");
+			var year = splitDate[0];
+			var month = splitDate[1];
+			var day = splitDate[2];
+		} else {
+			var splitDate = date.split(".");
+			var year = splitDate[2];
+			var month = splitDate[1];
+			var day = splitDate[0];
+		}
+	} else {
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (day >= 0 && day <= 9) {
+			day = "0" + day;
+		}
 	}
 	var date = day + "." + month + "." + year;
 	doc.moveDown(3);
@@ -271,8 +285,11 @@ app.get('/submit', function(req, res) {
 		   .text(date);
 		doc.font('Helvetica-Bold')
 		   .text("Angebotsnummer: ", {continued: true});
-		doc.font('Helvetica')
-		   .text("A" + year + month + day + offerIndex);
+		doc.font('Helvetica');
+		if (req.query.number != "")
+			doc.text(req.query.number);
+		else
+			doc.text("A" + year + month + day + offerIndex);
 		offerIndex++;
 	} else {
 		doc.text("Rechnungsdatum / Lieferdatum: ", {continued: true});
@@ -280,8 +297,11 @@ app.get('/submit', function(req, res) {
 		   .text(date);
 		doc.font('Helvetica-Bold')
 		   .text("Rechnungsnummer: ", {continued: true});
-		doc.font('Helvetica')
-		   .text("R" + year + month + day + invoiceIndex);
+		doc.font('Helvetica');
+		if (req.query.number != "")
+			doc.text(req.query.number);
+		else
+			doc.text("R" + year + month + day + invoiceIndex);
 		invoiceIndex++;
 	}
 
