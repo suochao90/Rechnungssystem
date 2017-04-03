@@ -1,5 +1,6 @@
 function addHeader() {
-	var string = "<h1>Rechnung System</h1>"
+	var string = '<img src="logo.png" alt="logo" />'
+			   + "<h1>IHTCT Angebot und Rechnung System</h1>"
 			   + "<header>"
 			   + "<nav>"
 			   + "<ul>"
