@@ -99,7 +99,7 @@ app.get('/sendAddress', function(req, res) {
 	address.plz = unescape(req.query.plz);
 	address.ort = unescape(req.query.ort);
 	address.land = unescape(req.query.land);
-	if (req.query.name != "") {
+	if (req.query.name != "" && req.query.street + req.query.zusatz + req.query.plz + req.query.ort + req.query.land == "") {
 		connection.query('select * from Rechnungsadresse where Name=' + '"' + req.query.name + '"', function(error, results, fields) {
 			if (error) throw error;
 			if (typeof results[0] != "undefined") {
@@ -395,6 +395,31 @@ app.get('/submit', function(req, res) {
 					address.plz != "" &&
 					address.ort != "" &&
 					address.land != "") {
+					var values = "('" + address.customerName + "','"
+							   + address.street + "','"
+							   + address.zusatz + "','"
+							   + address.plz + "','"
+							   + address.ort + "','"
+							   + address.land + "')";
+					connection.query('insert into Rechnungsadresse values' + values, function(error, results, fields) {
+						if (error) throw error;
+						address.customerName = "";
+						address.street = "";
+						address.zusatz = "";
+						address.plz = "";
+						address.ort = "";
+						address.land = "";
+					});
+				}
+			} else if (typeof results[0] != "undefined" && (address.street != results[0].SuH || address.zusatz != results[0].Adresszusatz || address.plz != results[0].PLZ || address.ort != results[0].Ort || address.land != results[0].Land)) {
+				if (address.customerName != "" &&
+					address.street != "" &&
+					address.plz != "" &&
+					address.ort != "" &&
+					address.land != "") {
+					connection.query('delete from Rechnungsadresse where Name=' + '"' + address.customerName + '"', function(error, results, fields) {
+						if (error) throw error;
+					});
 					var values = "('" + address.customerName + "','"
 							   + address.street + "','"
 							   + address.zusatz + "','"
