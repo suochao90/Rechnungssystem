@@ -23,6 +23,7 @@ form textarea {
 }
 
 form button {
+	display: block;
 	margin-top: 20px;
 	margin-left: 37%;
 }

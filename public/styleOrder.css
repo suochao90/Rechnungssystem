@@ -14,9 +14,8 @@ th {
 }
 
 form button {
-	float: right;
-	margin-top: 20px;
-	margin-right: 11.8%;
+	display: block;
+	margin: 20px auto 0 auto;
 }
 
 .beschreibung {
