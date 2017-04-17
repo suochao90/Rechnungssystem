@@ -343,40 +343,62 @@ app.get('/submit', function(req, res) {
 	   .moveTo(73, positionY)
 	   .lineTo(540, positionY)
 	   .stroke();
-	var sum = calculate.add(nettoSum, ustSum);
-	nettoSum = euroOutput(nettoSum);
-	ustSum = euroOutput(ustSum);
-	sum = euroOutput(sum);
-	doc.text(nettoSum + " €", 467, positionY + 10);
-	doc.text("Nettobetrag:", 370, positionY + 10);
-	doc.text(ustSum + " €", 467, positionY + 30);
-	doc.text("Umsatzsteuern:", 370, positionY + 30);
-	doc.moveTo(370, positionY + 50)
-	   .lineTo(540, positionY + 50)
-	   .stroke();
-	doc.font("Helvetica-Bold")
-	   .text(sum + " €", 467, positionY + 60);
-	doc.text("Bruttobetrag:", 370, positionY + 60);
+	if (req.query.discount != "") {
+		ustSum = calculate.mul(ustSum, 1 - calculate.div(parseInt(req.query.discount), 100));
+		var discount = calculate.mul(nettoSum, calculate.div(parseInt(req.query.discount), 100));
+		var sum = calculate.add(calculate.sub(nettoSum, discount), ustSum);
+		nettoSum = euroOutput(nettoSum);
+		discount = euroOutput(discount);
+		ustSum = euroOutput(ustSum);
+		sum = euroOutput(sum);
+		doc.text(nettoSum + " €", 467, positionY + 10);
+		doc.text("Nettobetrag:", 370, positionY + 10);
+		doc.text("-" + discount + " €", 467, positionY + 30);
+		doc.text(req.query.discount + "% Rabatt:", 370, positionY + 30);
+		doc.text(ustSum + " €", 467, positionY + 50);
+		doc.text("Umsatzsteuern:", 370, positionY + 50);
+		doc.moveTo(370, positionY + 70)
+		   .lineTo(540, positionY + 70)
+		   .stroke();
+		doc.font("Helvetica-Bold")
+		   .text(sum + " €", 467, positionY + 80);
+		doc.text("Bruttobetrag:", 370, positionY + 80);
+	} else {
+		var sum = calculate.add(nettoSum, ustSum);
+		nettoSum = euroOutput(nettoSum);
+		ustSum = euroOutput(ustSum);
+		sum = euroOutput(sum);
+		doc.text(nettoSum + " €", 467, positionY + 10);
+		doc.text("Nettobetrag:", 370, positionY + 10);
+		doc.text(ustSum + " €", 467, positionY + 30);
+		doc.text("Umsatzsteuern:", 370, positionY + 30);
+		doc.moveTo(370, positionY + 50)
+		   .lineTo(540, positionY + 50)
+		   .stroke();
+		doc.font("Helvetica-Bold")
+		   .text(sum + " €", 467, positionY + 60);
+		doc.text("Bruttobetrag:", 370, positionY + 60);
+	}
 
 	if (req.query.type == "offer") {
 		doc.font("Helvetica");
 		if(req.query.remark != "")
-			doc.text(req.query.remark, 73, positionY + 100);
+			doc.text(req.query.remark, 73, positionY + 120);
 		else {
-			doc.text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 100)
+			doc.text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 120)
 			   .moveDown()
 			   .text("Zur Annahme des Angebots überweisen Sie uns den Gesamtbetrag unter Angabe der Angebotsnummer. Nach Erhalt des oben genannten Betrages werden wir mit Ihnen die Warenübergabe abstimmen.");
 		}
 	} else {
 		if(req.query.remark != "") {
 			doc.font("Helvetica")
-		       .text(req.query.remark, 73, positionY + 100);
+		       .text(req.query.remark, 73, positionY + 120);
 		}
 	}
 
 	doc.font("Helvetica")
 	   .fontSize(8);
-	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
+	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, positionY + 260, {align: 'center'});
 	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
 	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
 	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
