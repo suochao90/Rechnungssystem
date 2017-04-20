@@ -398,7 +398,7 @@ app.get('/submit', function(req, res) {
 
 	doc.font("Helvetica")
 	   .fontSize(8);
-	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, positionY + 260, {align: 'center'});
+	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
 	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
 	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
 	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
