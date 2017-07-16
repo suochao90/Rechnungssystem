@@ -10,12 +10,14 @@ form label {
     font-size: 14px;
     font-family: Tahoma;
 	font-weight: bold;
+	color: #CBBFA3;
 }
 
 form div {
 	margin-left: 37%;
     font-size: 14px;
     font-family: Tahoma;
+	color: #CBBFA3;
 }
 
 form textarea {
@@ -26,4 +28,5 @@ form button {
 	display: block;
 	margin-top: 20px;
 	margin-left: 37%;
+	color: #CBBFA3;
 }

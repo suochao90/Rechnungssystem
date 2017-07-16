@@ -1,6 +1,6 @@
 function addHeader() {
-	var string = '<img src="logo.png" alt="logo" width="138" height="84">'
-			   + "<h1>IHTCT Angebots- und Rechnungssystem</h1>"
+	var string = '<img src="logo.png" alt="logo" width="300" height="90.8">'
+			   + "<h1>BILIN Angebots- und Rechnungssystem</h1>"
 			   + "<header>"
 			   + "<nav>"
 			   + "<ul>"
