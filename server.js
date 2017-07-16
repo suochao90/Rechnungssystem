@@ -209,7 +209,7 @@ app.get('/submit', function(req, res) {
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
 	doc.image('logo.png', 73, 36, {
-		fit: [90, 55]
+		fit: [168.5, 51]
 	});
 	doc.font('Helvetica-Bold')
 	   .fontSize(20);
