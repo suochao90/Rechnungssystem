@@ -240,9 +240,9 @@ app.get('/submit', function(req, res) {
 	doc.font('Helvetica')
 	   .text(text);
 
-	var ihtct = "IHTCT Healthcare & Trade GmbH" + "\n"
-	          + "Emanuel-Leutze-Str. 21" + "\n"
-			  + "40547 Düsseldorf" + "\n"
+	var bilin = "BILIN GmbH" + "\n"
+	          + "Ludwigstraße 5b" + "\n"
+			  + "38106 Braunschweig" + "\n"
 			  + "Deutschland" + "\n"
 			  + "USt-ID: DE305531798"
 	
@@ -250,7 +250,7 @@ app.get('/submit', function(req, res) {
 		doc.moveUp();
 	}
 	doc.font('Helvetica-Bold');
-	doc.text(ihtct, {align: 'right'});
+	doc.text(bilin, {align: 'right'});
 
 	if (req.query.date != "") {
 		var date = req.query.date;
@@ -398,13 +398,12 @@ app.get('/submit', function(req, res) {
 
 	doc.font("Helvetica")
 	   .fontSize(8);
-	doc.text("IHTCT Healthcare & Trade GmbH, Emanuel-Leutze-Str. 21, 40547 Düsseldorf", 73, 655, {align: 'center'});
-	doc.text("Inhaber: Jianping Zhou; AG Düsseldorf, HRB 76781", {align: 'center'});
-	doc.text("USt-ID-Nummer: DE305531798", {align: 'center'});
-	doc.text("Web: www.ihtct.de  E-Mail: info@ihtct.de", {align: 'center'});
+	doc.text("BILIN GmbH, Ludwigstraße 5b, 38106 Braunschweig", 73, 664, {align: 'center'});
+	doc.text("Geschäftsführer: Chao Suo", {align: 'center'});
+	doc.text("Handelsregister: Amtsgericht Braunschweig HRB 206655 | USt-ID-Nummer: DE305531798", {align: 'center'});
+	doc.text("Telefon: +49 (0)531 22436166 | Fax: +49 (0)531 22436193 | E-mail: info@bilin-handel.de", {align: 'center'});
 	doc.moveDown()
-	   .text("Bankverbindubng: IBAN: DE82 3007 0024 0290 8168 00", {align: 'center'});
-	doc.text("BIC: DEUTDEDBDUE", {align: 'center'});
+	   .text("Bankverbindubng: IBAN: DE82 2707 0024 0313 8120 00 | BIC: DEUTDEDB270", {align: 'center'});
 	
 	doc.end();
 
