@@ -42,6 +42,14 @@ var order = new Order();
 
 var invoiceIndex = 1;
 var offerIndex = 1;
+connection.query('select * from Rechnungsnummer', function(error, results, fields) {
+	if (error) {
+		console.log("ERROR: Can't read context of Rechnungsnummer from database.");
+		throw error;
+	}
+	if (typeof results[0] != "undefined")
+		invoiceIndex = results[0].Nummer + 1;
+});
 
 function euroOutput(num) {
 	if (typeof num == "number") {
@@ -288,9 +296,10 @@ app.get('/submit', function(req, res) {
 		doc.font('Helvetica');
 		if (req.query.number != "")
 			doc.text(req.query.number);
-		else
+		else {
 			doc.text("A" + year + month + day + offerIndex);
-		offerIndex++;
+			offerIndex++;
+		}
 	} else {
 		doc.text("Rechnungsdatum / Lieferdatum: ", {continued: true});
 		doc.font('Helvetica')
@@ -300,9 +309,13 @@ app.get('/submit', function(req, res) {
 		doc.font('Helvetica');
 		if (req.query.number != "")
 			doc.text(req.query.number);
-		else
-			doc.text("R" + year + month + day + invoiceIndex);
-		invoiceIndex++;
+		else {
+			doc.text("0606" + invoiceIndex);
+			invoiceIndex++;
+			connection.query('update Rechnungsnummer set Nummer = Nummer + 1', function(error, results, fields) {
+				if (error) throw error;
+			});
+		}
 	}
 
 	doc.moveTo(73, 295)
