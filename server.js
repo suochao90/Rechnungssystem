@@ -404,19 +404,22 @@ app.get('/submit', function(req, res) {
 		}
 	} else {
 		if(req.query.remark != "") {
+			var tempRemark = req.query.remark.split("\r\n");
 			doc.font("Helvetica")
-		       .text(req.query.remark, 73, positionY + 120);
+			   .text(tempRemark[0], 73, positionY + 120);
+			for(var i = 1; i < tempRemark.length; i++) {
+				doc.text(tempRemark[i]);
+			}
 		}
 	}
 
 	doc.font("Helvetica")
 	   .fontSize(8);
-	doc.text("BILIN GmbH, Ludwigstraße 5b, 38106 Braunschweig", 73, 664, {align: 'center'});
+	doc.text("BILIN GmbH, Ludwigstraße 5b, 38106 Braunschweig", 73, 673, {align: 'center'});
 	doc.text("Geschäftsführer: Chao Suo", {align: 'center'});
 	doc.text("Handelsregister: Amtsgericht Braunschweig HRB 206655 | USt-ID-Nummer: DE305531798", {align: 'center'});
 	doc.text("Telefon: +49 (0)531 22436166 | Fax: +49 (0)531 22436193 | E-mail: info@bilin-handel.de", {align: 'center'});
-	doc.moveDown()
-	   .text("Bankverbindubng: IBAN: DE82 2707 0024 0313 8120 00 | BIC: DEUTDEDB270", {align: 'center'});
+	doc.text("Bankverbindubng: IBAN: DE82 2707 0024 0313 8120 00 | BIC: DEUTDEDB270", {align: 'center'});
 	
 	doc.end();
 
