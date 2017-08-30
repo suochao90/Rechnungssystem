@@ -4,41 +4,26 @@
 		<link rel="stylesheet" type="text/css" href="styleHeader.css">
 		<link rel="stylesheet" type="text/css" href="styleInventory.css">
 		<script type="text/javascript" src="ajax.js"></script>
+		<script type="text/javascript" src="inventory.js"></script>
 		<script type="text/javascript" src="header.js"></script>
 	</head>
 	<body id="body">
 		<script>
 			addHeader();
 		</script>
-		<table border="1">
+		<table id="inventory" border="1">
 			<tr>
 				<th>Position</th>
 				<th>Artikelnummer</th>
 				<th>Artikelbezeichnung</th>
 				<th>Menge (Stk.)</th>
-				<th>Einstandspreis</th>
-				<th>Inventurwert</th>
-			</tr>
-			<tr>
-				<td class="position">1</td>
-				<td class="artikelnummer">30795-150-0</td>
-				<td class="bezeichung">Zwilling TWIN Pollux Hackmesser</td>
-				<td class="menge">12</td>
-				<td class="preis">33,6</td>
-				<td class="inventurwert">403,2</td>
-			</tr>
-			<tr>
-				<td class="position">2</td>
-				<td class="artikelnummer">30795-150-0</td>
-				<td class="bezeichung">Zwilling TWIN Pollux Chinesisch Kochmesser</td>
-				<td class="menge">12</td>
-				<td class="preis">33,6</td>
-				<td class="inventurwert">403,2</td>
+				<th>Einstandspreis €</th>
+				<th>Inventurwert €</th>
 			</tr>
 		</table>
 		<button type="button" onclick="addRow();">Neue Beschreibung Hinzufügen</button>
 		<script>
-			recoveryOrder();
+			recoveryInventory();
 		</script>
 	</body>
 </html>

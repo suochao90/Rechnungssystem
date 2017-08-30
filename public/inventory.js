@@ -1,6 +1,4 @@
-var numOfRow = 0;
-
-function sendOrder() {
+function sendInventory() {
 	var beschreibung = document.getElementById("beschreibung0").value;
 	var menge = document.getElementById("menge0").value;
 	var preisOhneUSt = document.getElementById("preisOhneUSt0").value;
@@ -30,8 +28,8 @@ function sendOrder() {
 	request.send();
 }
 
-function recoveryOrder() {
-	var url = "/recoveryOrder";
+function recoveryInventory() {
+	var url = "/recoveryInventory";
 	request.open("GET", url, true);
 	request.onreadystatechange = updatePage;
 	request.send();
@@ -40,70 +38,63 @@ function recoveryOrder() {
 function updatePage() {
 	if (request.readyState == 4 && request.status == 200) {
 		var response = request.responseText.split("#");
-		if (response[7] === "recovery")
-			addRow(response[0]);
-
-		var beschreibung = response[1].split("|");
-		var menge = response[2].split("|");
-		var preisOhneUSt = response[3].split("|");
-		var ust = response[4].split("|");
-		var preisMitUSt = response[5].split("|");
-		var gesamtPreis = response[6].split("|");
+		addRow(response[0]);
+		var artikelnummer = response[1].split("|");
+		var artikelbezeichnung = response[2].split("|");
+		var menge = response[3].split("|");
+		var einstandspreis = response[4].split("|");
+		var inventurwert = response[5].split("|");
 		
-		for (var i = 0; i <= response[0]; i++) {
-			document.getElementById("beschreibung" + i).value = beschreibung[i];
+		for (var i = 0; i < response[0]; i++) {
+			document.getElementById("position" + i).value = i + 1;
+			document.getElementById("artikelnummer" + i).value = artikelnummer[i];
+			document.getElementById("artikelbezeichnung" + i).value = artikelbezeichnung[i];
 			document.getElementById("menge" + i).value = menge[i];
-			document.getElementById("preisOhneUSt" + i).value = preisOhneUSt[i];
-			document.getElementById("ust" + i).value = ust[i];
-			document.getElementById("preisMitUSt" + i).value = preisMitUSt[i];
-			document.getElementById("gesamtPreis" + i).value = gesamtPreis[i];
+			document.getElementById("einstandspreis" + i).value = einstandspreis[i];
+			document.getElementById("inventurwert" + i).value = inventurwert[i];
 		}
-		
-		if (response[0] == 0 && response[7] === "recovery")
-			document.getElementById("menge0").value = "1";
 	}
 }
 
 function addRow(n) {
-	var beschreibung = document.getElementById("beschreibung0").value;
+/*	var artikelnummer = document.getElementById("artikelnummer0").value;
+	var artikelbezeichnung = document.getElementById("artikelbezeichnung0").value;
 	var menge = document.getElementById("menge0").value;
-	var preisOhneUSt = document.getElementById("preisOhneUSt0").value;
-	var ust = document.getElementById("ust0").value;
-	var preisMitUSt = document.getElementById("preisMitUSt0").value;
-	var gesamtPreis = document.getElementById("gesamtPreis0").value;
+	var einstandspreis = document.getElementById("einstandspreis0").value;
+	var inventurwert = document.getElementById("inventurwert0").value;
 	
-	for (var i = 1; i <= numOfRow; i++) {
-		beschreibung = beschreibung + "|" + document.getElementById("beschreibung" + i).value;
+	if (typeof n == "undefined")
+		n = 1;
+	
+	for (var i = 1; i < n; i++) {
+		artikelnummer = beschreibung + "|" + document.getElementById("beschreibung" + i).value;
 		menge = menge + "|"+ document.getElementById("menge" + i).value;
 		preisOhneUSt = preisOhneUSt + "|" + document.getElementById("preisOhneUSt" + i).value;
 		ust = ust + "|" + document.getElementById("ust" + i).value;
 		preisMitUSt = preisMitUSt + "|" + document.getElementById("preisMitUSt" + i).value;
 		gesamtPreis = gesamtPreis + "|" + document.getElementById("gesamtPreis" + i).value;
-	}
-
-	if (typeof n == "undefined")
-		n = 1;
+	}*/
 	
 	for (var j = 0; j < n; j++) {
-		numOfRow ++;
-		var idBeschreibung = "beschreibung" + numOfRow;
-		var idMenge = "menge" + numOfRow;
-		var idPreisOhneUSt = "preisOhneUSt" + numOfRow;
-		var idUSt = "ust" + numOfRow;
-		var idPreisMitUSt = "preisMitUSt" + numOfRow;
-		var idGesamtPreis = "gesamtPreis" + numOfRow;
+		var idPosition = "position" + j;
+		var idArtikelnummer = "artikelnummer" + j;
+		var idArtikelbezeichnung = "artikelbezeichnung" + j;
+		var idMenge = "menge" + j;
+		var idEinstandspreis = "einstandspreis" + j;
+		var idInventurwert = "inventurwert" + j;
 
-		var string = "<tr><td><input id='" + idBeschreibung + "' type=text class='beschreibung' onblur='sendOrder();'></td>"
-				   + "<td><input id='" + idMenge + "' type=text class='menge' value='1' onFocus='this.value=''' onblur='sendOrder();'></td>"
-				   + "<td><input id='" + idPreisOhneUSt + "' type=text class='preisOhneUSt' onblur='sendOrder();'></td>"
-				   + "<td><input id='" + idUSt + "' type=text class='ust' onblur='sendOrder();'></td>"
-				   + "<td><input id='" + idPreisMitUSt + "' type=text class='preisMitUSt' onblur='sendOrder();'></td>"
-				   + "<td><input id='" + idGesamtPreis + "' type=text class='gesamtPreis' onblur='sendOrder();'></td></tr>";
+		var string = "<tr><td><input id='" + idPosition + "' type=text class='position'></td>"
+				   + "<td><input id='" + idArtikelnummer + "' type=text class='idArtikelnummer'></td>"
+				   + "<td><input id='" + idArtikelbezeichnung + "' type=text class='artikelbezeichnung'></td>"
+				   + "<td><input id='" + idMenge + "' type=text class='menge'></td>"
+				   + "<td><input id='" + idEinstandspreis + "' type=text class='einstandspreis'></td>"
+				   + "<td><input id='" + idInventurwert + "' type=text class='inventurwert'></td>"
+				 //  + "<td id='" + idInventurwert + "'></td>"
 
-		document.getElementById("order").innerHTML += string;
+		document.getElementById("inventory").innerHTML += string;
 	}
 
-	beschreibung = beschreibung.split("|");
+/*	beschreibung = beschreibung.split("|");
 	menge = menge.split("|");
 	preisOhneUSt = preisOhneUSt.split("|");
 	ust = ust.split("|");
@@ -117,5 +108,5 @@ function addRow(n) {
 		document.getElementById("ust" + k).value = ust[k];
 		document.getElementById("preisMitUSt" + k).value = preisMitUSt[k];
 		document.getElementById("gesamtPreis" + k).value = gesamtPreis[k];
-	}
+	}*/
 }
