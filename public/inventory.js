@@ -89,7 +89,6 @@ function addRow(n) {
 				   + "<td><input id='" + idMenge + "' type=text class='menge'></td>"
 				   + "<td><input id='" + idEinstandspreis + "' type=text class='einstandspreis'></td>"
 				   + "<td><input id='" + idInventurwert + "' type=text class='inventurwert'></td>"
-				 //  + "<td id='" + idInventurwert + "'></td>"
 
 		document.getElementById("inventory").innerHTML += string;
 	}

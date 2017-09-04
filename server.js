@@ -37,8 +37,17 @@ var Order = function() {
 	this.gesamtPreis = new Array();
 }
 
+var Inventar = function() {
+	this.artikelnummer = new Array();
+	this.artikelbezeichnung = new Array();
+	this.menge = new Array();
+	this.einstandspreis = new Array();
+	this.inventurwert = new Array();
+}
+
 var address = new Address();
 var order = new Order();
+var inventar = new Inventar();
 
 var invoiceIndex = 1;
 var offerIndex = 1;
@@ -500,6 +509,42 @@ app.get('/submit', function(req, res) {
 	order.numOfRow = 0;
 	console.log(req.query);
 	res.send("<script>window.location.href='/pdf/invoice.pdf';</script>");
+});
+
+app.get('/recoveryInventory', function(req, res) {
+	connection.query('select * from Inventar', function(error, results, fields) {
+		if (error) throw error;
+		if (typeof results != "undefined") {
+			for(var i = 0; i < results.length; i++) {
+				inventar.artikelnummer[i] = results[i].Artikelnummer;
+				inventar.artikelbezeichnung[i] = results[i].Artikelbezeichnung;
+				inventar.menge[i] = results[i].Menge;
+					inventar.einstandspreis[i] = results[i].Einstandspreis;
+					inventar.inventurwert[i] = results[i].Inventurwert;
+				}
+			}
+			var artikelnummer = inventar.artikelnummer[0];
+			var artikelbezeichnung = inventar.artikelbezeichnung[0];
+			var menge  = inventar.menge[0];
+			var einstandspreis = inventar.einstandspreis[0];
+			var inventurwert = inventar.inventurwert[0];
+
+		for (var i = 1; i < results.length; i++) {
+			artikelnummer = artikelnummer + "|" + inventar.artikelnummer[i];
+			artikelbezeichnung = artikelbezeichnung + "|" + inventar.artikelbezeichnung[i];
+			menge = menge + "|" + inventar.menge[i];
+			einstandspreis = einstandspreis + "|" + inventar.einstandspreis[i];
+			inventurwert = inventurwert + "|" + inventar.inventurwert[i];
+		}
+
+		var text = results.length + "#"
+				 + artikelnummer + "#"
+				 + artikelbezeichnung + "#"
+				 + menge + "#"
+				 + einstandspreis + "#"
+				 + inventurwert;
+		res.send(text);
+	});
 });
 
 httpServer.listen(app.get('port'), function () {
