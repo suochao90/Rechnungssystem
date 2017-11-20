@@ -242,7 +242,7 @@ app.get('/submit', function(req, res) {
 
 	if (address.zusatz != "")
 		var text = address.customerName + "\n"
-				 + address.street + ", "
+				 + address.street + "\n"
 				 + address.zusatz + "\n"
 				 + address.plz + " "
 				 + address.ort + "\n"
@@ -409,8 +409,13 @@ app.get('/submit', function(req, res) {
 
 	if (req.query.type == "offer") {
 		doc.font("Helvetica");
-		if(req.query.remark != "")
-			doc.text(req.query.remark, 73, positionY + 120);
+		if(req.query.remark != "") {
+			var tempRemark = req.query.remark.split("\r\n");
+			doc.text(tempRemark[0], 73, positionY + 120);
+			for(var i = 1; i < tempRemark.length; i++) {
+				doc.text(tempRemark[i]);
+			}
+		}
 		else {
 			doc.text("Dieses Angebot ist 1 Woche ab dem Datum des Angebots gültig.", 73, positionY + 120)
 			   .moveDown()
