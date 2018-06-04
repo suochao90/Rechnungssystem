@@ -258,8 +258,8 @@ app.get('/submit', function(req, res) {
 	   .text(text);
 
 	var bilin = "BILIN GmbH" + "\n"
-	          + "Ludwigstraße 5b" + "\n"
-			  + "38106 Braunschweig" + "\n"
+	          + "Sickter Straße 9" + "\n"
+			  + "38162 Cremlingen" + "\n"
 			  + "Deutschland" + "\n"
 			  + "USt-ID: DE312855124"
 	
@@ -434,10 +434,10 @@ app.get('/submit', function(req, res) {
 
 	doc.font("Helvetica")
 	   .fontSize(8);
-	doc.text("BILIN GmbH, Ludwigstraße 5b, 38106 Braunschweig", 73, 673, {align: 'center'});
+	doc.text("BILIN GmbH, Sickter Straße 9, 38162 Cremlingen", 73, 673, {align: 'center'});
 	doc.text("Geschäftsführer: Chao Suo", {align: 'center'});
 	doc.text("Handelsregister: Amtsgericht Braunschweig HRB 206655 | USt-ID-Nummer: DE312855124", {align: 'center'});
-	doc.text("Telefon: +49 (0)531 22436166 | Fax: +49 (0)531 22436193 | E-mail: info@bilin-handel.de", {align: 'center'});
+	doc.text("Telefon: +49 176 3067 2679 | E-mail: info@bilin-handel.de", {align: 'center'});
 	doc.text("Bankverbindubng: IBAN: DE82 2707 0024 0313 8120 00 | BIC: DEUTDEDB270", {align: 'center'});
 	
 	doc.end();
