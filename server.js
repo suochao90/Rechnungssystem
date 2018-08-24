@@ -11,7 +11,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '111111',
+  password : '11111111',
   database : 'Rechnungssystem'
 });
 
@@ -225,7 +225,7 @@ app.get('/submit', function(req, res) {
 	var doc = new PDF();
 	doc.pipe(fs.createWriteStream('./public/pdf/invoice.pdf'));
 
-	doc.image('logo.png', 73, 36, {
+	doc.image('./public/logo.png', 73, 36, {
 		fit: [168.5, 51]
 	});
 	doc.font('Helvetica-Bold')
