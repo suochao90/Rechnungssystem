@@ -73,7 +73,7 @@ function euroOutput(num) {
 		if (temp[1].length == 1)
 			num += "0";
 	}
-		
+
 	return num;
 }
 
@@ -102,7 +102,7 @@ function createText(textType) {
 			 + preisMitUSt + "#"
 			 + gesamtPreis + "#"
 			 + textType;
-	
+
 	return text;
 }
 
@@ -126,7 +126,7 @@ app.get('/sendAddress', function(req, res) {
 				address.plz = results[0].PLZ;
 				address.ort = results[0].Ort;
 				address.land = results[0].Land;
-				
+
 				var text = address.customerName + "|"
 						 + address.street + "|"
 						 + address.zusatz + "|"
@@ -174,7 +174,7 @@ app.get('/sendOrder', function(req, res) {
 			if (euroOutput(tempPreisOhneUSt[i]).indexOf(",") >= 0)
 				var str = euroOutput(tempPreisOhneUSt[i]).replace(",", ".");
 			order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
-			
+
 			if (tempMenge[i] != "")
 				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
 		}
@@ -183,7 +183,7 @@ app.get('/sendOrder', function(req, res) {
 			var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
 			if (tempUSt[i] != "")
 				order.preisOhneUSt[i] = euroOutput(calculate.div(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
-			
+
 			if (tempMenge[i] != "")
 				order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisOhneUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
 		}
@@ -193,14 +193,14 @@ app.get('/sendOrder', function(req, res) {
 				if (euroOutput(tempPreisOhneUSt[i]).indexOf(",") >= 0)
 					var str = euroOutput(tempPreisOhneUSt[i]).replace(",", ".");
 				order.preisMitUSt[i] = euroOutput(calculate.mul(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
-				
+
 				if (tempMenge[i] != "")
 					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(str), parseInt(tempMenge[i])));
 			} else if (tempPreisMitUSt[i] != lastPMU) {
 				var str = euroOutput(tempPreisMitUSt[i]).replace(",", ".");
 				if (tempUSt[i] != "")
 					order.preisOhneUSt[i] = euroOutput(calculate.div(parseFloat(str), calculate.div(parseInt(tempUSt[i]), 100) + 1));
-				
+
 				if (tempMenge[i] != "")
 					order.gesamtPreis[i] = euroOutput(calculate.mul(parseFloat(order.preisOhneUSt[i].replace(",", ".")), parseInt(tempMenge[i])));
 			} else {
@@ -210,7 +210,7 @@ app.get('/sendOrder', function(req, res) {
 			}
 		}
 	}
-	
+
 	res.send(createText("calculate"));
 	console.log(order);
 });
@@ -235,7 +235,7 @@ app.get('/submit', function(req, res) {
 	else
 		doc.text('RECHNUNG', {align: 'right'});
 	doc .moveDown(2);
-	
+
 	doc.fontSize(12);
 	if (req.query.type == "order")
 	   doc.text('Rechnungsadresse:');
@@ -262,7 +262,7 @@ app.get('/submit', function(req, res) {
 			  + "38162 Cremlingen" + "\n"
 			  + "Deutschland" + "\n"
 			  + "USt-ID: DE312855124"
-	
+
 	for(i = 0; i < 5; i++) {
 		doc.moveUp();
 	}
@@ -343,7 +343,7 @@ app.get('/submit', function(req, res) {
 	   .text("USt.%", 320, 337)
 	   .text("Stückpreis\n(ohne USt.)", 379, 330)
 	   .text("Gesamtpreis\n(ohne USt.)", 467, 330);
-	
+
 	doc.moveTo(73, 365)
 	   .lineTo(540, 365)
 	   .stroke();
@@ -437,9 +437,9 @@ app.get('/submit', function(req, res) {
 	doc.text("BILIN GmbH, Sickter Straße 9, 38162 Cremlingen", 73, 673, {align: 'center'});
 	doc.text("Geschäftsführer: Chao Suo", {align: 'center'});
 	doc.text("Handelsregister: Amtsgericht Braunschweig HRB 206655 | USt-ID-Nummer: DE312855124", {align: 'center'});
-	doc.text("Telefon: +49 176 3067 2679 | E-mail: info@bilin-handel.de", {align: 'center'});
+	doc.text("Telefon: +49 176 3067 2679 | E-mail: info@bilin.eu", {align: 'center'});
 	doc.text("Bankverbindubng: IBAN: DE82 2707 0024 0313 8120 00 | BIC: DEUTDEDB270", {align: 'center'});
-	
+
 	doc.end();
 
 	if (address.customerName != "") {
